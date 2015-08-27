@@ -75,13 +75,6 @@ class sample_form(forms.Form):
     samples = forms.CharField(label='Samples', max_length=200, required = False)  
 
 
-class evs_pop(forms.Form):
-    OPTIONS =(
-        ("all","Both"), ("EA","European American"), ("AA","African American"), 
-        )
-    pop = forms.ChoiceField(choices=OPTIONS, required = False) 
-
-
 class evs_format(forms.Form):
     OPTIONS =(
         ("",""), ("xlsx","Excel(.xlsx)"), ("vcf", "VCF"),

@@ -150,12 +150,11 @@ def file_frmt_view_up(request):
             upload_file = ProfileForm(request.POST, request.FILES)
             upload_name = file_uploaded_form(request.POST)
             sample_up = sample_form(request.POST)
-            evs = evs_pop(request.POST)
             evs_form = evs_format(request.POST)
             maf = maf_form(request.POST)
             esp_excel_columns = excel_columns(request.POST)
             
-            if form.is_valid() and picker.is_valid() and region.is_valid() and frmt.is_valid() and form_up.is_valid() and upload_file.is_valid() and upload_name.is_valid() and sample_up.is_valid() and evs.is_valid() and evs_form.is_valid() and maf.is_valid() and esp_excel_columns.is_valid():
+            if form.is_valid() and picker.is_valid() and region.is_valid() and frmt.is_valid() and form_up.is_valid() and upload_file.is_valid() and upload_name.is_valid() and sample_up.is_valid() and evs_form.is_valid() and maf.is_valid() and esp_excel_columns.is_valid():
                 chromo = form.cleaned_data.get('chromosome')
                 populations = picker.cleaned_data.get('populations')
                 start = region.cleaned_data.get('start')
@@ -163,7 +162,6 @@ def file_frmt_view_up(request):
                 file_format = frmt.cleaned_data.get('file_format')
                 format_form = form_up.cleaned_data.get('format_output')
                 spec_samples = sample_up.cleaned_data.get('samples')
-                pop_evs = evs.cleaned_data.get('pop')
                 format_evs = evs_form.cleaned_data.get('esp_format')
                 ea = maf.cleaned_data.get('EA')
                 aa = maf.cleaned_data.get('AA')
@@ -230,7 +228,7 @@ def file_frmt_view_up(request):
                 elif format_evs=="vcf":
                     return filter_vcf(str(chromo), int(start), int(stop), doc_name, user_profile, ea, aa, total, ea_sign, aa_sign, total_sign)
                 elif format_evs=="xlsx":
-                    return evs_xlsx_file(str(chromo), int(start), int(stop), doc_name, user_profile, pop_evs, esp_columns)
+                    return evs_xlsx_file(str(chromo), int(start), int(stop), doc_name, user_profile, list(esp_columns))
                     
                 return redirect('/documents/')
                 #return HttpResponse(str(samples))
@@ -244,7 +242,6 @@ def file_frmt_view_up(request):
             upload_file = ProfileForm(instance=request.user.userprofile)
             upload_name = file_uploaded_form()
             sample_up = sample_form()
-            evs = evs_pop()
             evs_form = evs_format()
             maf = maf_form()
             esp_excel_columns = excel_columns()
@@ -253,7 +250,7 @@ def file_frmt_view_up(request):
         return redirect('/authentication/')
     return render(request, 'polls/tool.html', {'form':form, 'picker':picker, 'region':region, 'frmt':frmt, 'form_up':form_up,
                                                'upload_file':upload_file, 'upload_name':upload_name, 'sample_up':sample_up,
-                                               'documents': documents, 'plots':plots, 'evs':evs, 'evs_form':evs_form, 'maf':maf, 'esp_columns':esp_excel_columns}) 
+                                               'documents': documents, 'plots':plots, 'evs_form':evs_form, 'maf':maf, 'esp_columns':esp_excel_columns}) 
 
 
 

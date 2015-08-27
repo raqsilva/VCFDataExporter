@@ -1,7 +1,11 @@
 
-# Dictionaries used in vcf_functions.py
-
 import collections
+
+column_dic = {
+        'EA_AC':(6, 'European American Allele Count'), 'AA_AC':(7, 'African American Allele Count'), 'TAC':(8, 'Total Allele Count'), 'MAF':(9, 'Minor Allele Frequency'),
+        'EA_GTC':(10, 'European American Genotype Counts'), 'AA_GTC':(11, 'African American Genotype Count'), 'GTC':(12, 'Total Genotype Count'),
+        'DP':(13, 'Average Sample Read Depth'), 'FG':(14, 'Function GVS'), 'CDS_SIZES':(15, 'Coding DNA Sizes'), 'GL':(16, 'Genes'), 'GRCh38_POSITION':(17, 'GRCh38_POSITION')
+                  }
 
 ftp_dic={'6': 'ALL.chr6.phase3_shapeit2_mvncall_integrated_v5a.20130502.genotypes.vcf.gz', '2': 'ALL.chr2.phase3_shapeit2_mvncall_integrated_v5a.20130502.genotypes.vcf.gz', '4': 'ALL.chr4.phase3_shapeit2_mvncall_integrated_v5a.20130502.genotypes.vcf.gz', '13': 'ALL.chr13.phase3_shapeit2_mvncall_integrated_v5a.20130502.genotypes.vcf.gz', '18': 'ALL.chr18.phase3_shapeit2_mvncall_integrated_v5a.20130502.genotypes.vcf.gz', '14': 'ALL.chr14.phase3_shapeit2_mvncall_integrated_v5a.20130502.genotypes.vcf.gz', '7': 'ALL.chr7.phase3_shapeit2_mvncall_integrated_v5a.20130502.genotypes.vcf.gz', '17': 'ALL.chr17.phase3_shapeit2_mvncall_integrated_v5a.20130502.genotypes.vcf.gz', '10': 'ALL.chr10.phase3_shapeit2_mvncall_integrated_v5a.20130502.genotypes.vcf.gz', '1': 'ALL.chr1.phase3_shapeit2_mvncall_integrated_v5a.20130502.genotypes.vcf.gz', '16': 'ALL.chr16.phase3_shapeit2_mvncall_integrated_v5a.20130502.genotypes.vcf.gz', '9': 'ALL.chr9.phase3_shapeit2_mvncall_integrated_v5a.20130502.genotypes.vcf.gz', '22': 'ALL.chr22.phase3_shapeit2_mvncall_integrated_v5a.20130502.genotypes.vcf.gz', 'X': 'ALL.chrX.phase3_shapeit2_mvncall_integrated_v1a.20130502.genotypes.vcf.gz', '21': 'ALL.chr21.phase3_shapeit2_mvncall_integrated_v5a.20130502.genotypes.vcf.gz', 'Y': 'ALL.chrY.phase3_integrated_v1a.20130502.genotypes.vcf.gz', '12': 'ALL.chr12.phase3_shapeit2_mvncall_integrated_v5a.20130502.genotypes.vcf.gz', '3': 'ALL.chr3.phase3_shapeit2_mvncall_integrated_v5a.20130502.genotypes.vcf.gz', '11': 'ALL.chr11.phase3_shapeit2_mvncall_integrated_v5a.20130502.genotypes.vcf.gz', '19': 'ALL.chr19.phase3_shapeit2_mvncall_integrated_v5a.20130502.genotypes.vcf.gz', '8': 'ALL.chr8.phase3_shapeit2_mvncall_integrated_v5a.20130502.genotypes.vcf.gz', '20': 'ALL.chr20.phase3_shapeit2_mvncall_integrated_v5a.20130502.genotypes.vcf.gz', '15': 'ALL.chr15.phase3_shapeit2_mvncall_integrated_v5a.20130502.genotypes.vcf.gz', '5': 'ALL.chr5.phase3_shapeit2_mvncall_integrated_v5a.20130502.genotypes.vcf.gz'}
 

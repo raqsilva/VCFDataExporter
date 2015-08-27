@@ -6,12 +6,14 @@ import os
 from .vcf_functions import getBasePath, save, getFilePath, save_pdf, save_excel, parse_fasta
 import subprocess
 import collections
+from .dictionaries import column_dic
+
 
 #PYTERA_PATH = str(os.getenv('PYTERA_PATH'))
 PYTERA_PATH = '/usr/local/share/applications/pytera'
 
 
-def evs_xlsx_file(chromo, start, stop, named_file, user_profile, pop, columns):
+def evs_xlsx_file(chromo, start, stop, named_file, user_profile, columns):
     baseName=getFilePath(named_file)
     basePath=getBasePath()
     
@@ -21,12 +23,6 @@ def evs_xlsx_file(chromo, start, stop, named_file, user_profile, pop, columns):
     subprocess.call(PYTERA_PATH+"/static/tabix-0.2.6/tabix -f -p vcf -h "+baseName+".gz"+" "+str(chromo)+":"+str(start)+"-"+str(stop)+" > "+PYTERA_PATH+"/static/downloads/subset.vcf", shell=True)
     
     vcf_reader = vcf.Reader(filename=PYTERA_PATH+"/static/downloads/subset.vcf")
-    
-    column_dic = {
-        'EA_AC':(6, 'European American Allele Count'), 'AA_AC':(7, 'African American Allele Count'), 'TAC':(8, 'Total Allele Count'), 'MAF':(9, 'Minor Allele Frequency'),
-        'EA_GTC':(10, 'European American Genotype Counts'), 'AA_GTC':(11, 'African American Genotype Count'), 'GTC':(12, 'Total Genotype Count'),
-        'DP':(13, 'Average Sample Read Depth'), 'FG':(14, 'Function GVS'), 'CDS_SIZES':(15, 'Coding DNA Sizes'), 'GL':(16, 'Genes'), 'GRCh38_POSITION':(17, 'GRCh38_POSITION')
-                  }
     
     text = {}
     for key in columns:
@@ -38,25 +34,6 @@ def evs_xlsx_file(chromo, start, stop, named_file, user_profile, pop, columns):
     text[3] = ['Type'] #SNP/INDEL
     text[4] = ['REF']
     text[5] = ['ALT']
-    if pop=='EA':
-        text[6] = ['European American Allele Count'] #European American Allele Count
-    elif pop=='AA':
-        text[7] = ['African American Allele Count'] #African American Allele Count
-    else:
-        text[6] = ['European American Allele Count'] #European American Allele Count
-        text[7] = ['African American Allele Count'] #African American Allele Count
-    text[8] = ['Total Allele Count'] #Total Allele Count
-    if pop=='EA':
-        text[9] = ['European American Genotype Counts'] #European American Genotype Counts in the order of listed GTS
-    elif pop=='AA':
-        text[10] = ['African American Genotype Counts'] #African American Genotype Counts in the order of listed GTS
-    else:
-        text[9] = ['European American Genotype Counts'] #European American Genotype Counts in the order of listed GTS
-        text[10] = ['African American Genotype Counts'] #African American Genotype Counts in the order of listed GTS
-    text[11] = ['Total Genotype Counts'] #Total Genotype Counts in the order of listed GTS
-    text[12] = ['Genes'] 
-    text[13] = ['GRCh38_POSITION'] 
-    text[14] = ['GVS Function']
     
     for record in vcf_reader:
         if record.POS>=start and record.POS<=stop and record.CHROM==chromo:
@@ -74,29 +51,63 @@ def evs_xlsx_file(chromo, start, stop, named_file, user_profile, pop, columns):
                 text[7].append('A='+str(record.INFO['AA_AC'][0])+' / R='+str(record.INFO['AA_AC'][1]))
             except KeyError:
                 pass
-            text[8].append('A='+str(record.INFO['TAC'][0])+' / R='+str(record.INFO['TAC'][1]))
             try:
-                text[9].append(str(record.INFO['GTS'][0])+'='+str(record.INFO['EA_GTC'][0])+' / '+str(record.INFO['GTS'][1])+'='+str(record.INFO['EA_GTC'][1]))
+                text[8].append('A='+str(record.INFO['TAC'][0])+' / R='+str(record.INFO['TAC'][1]))
             except KeyError:
                 pass
             try:
-                text[10].append(str(record.INFO['GTS'][0])+'='+str(record.INFO['AA_GTC'][0])+' / '+str(record.INFO['GTS'][1])+'='+str(record.INFO['AA_GTC'][1]))
+                text[9].append(str('EA='+str(record.INFO['MAF'][0])+' / '+'AA='+str(record.INFO['MAF'][1]+' / '+'All='+str(record.INFO['MAF'][2]))))
             except KeyError:
                 pass
-            text[11].append(str(record.INFO['GTS'][0])+'='+str(record.INFO['GTC'][0])+' / '+str(record.INFO['GTS'][1])+'='+str(record.INFO['GTC'][1]))
-            gene1 = record.INFO['GL'][0]
             try:
-                gene2 = record.INFO['GL'][1]
-                text[12].append(gene2)
-            except IndexError:
-                text[12].append(gene1)
-            text[13].append(str(record.INFO['GRCh38_POSITION'][0]))
+                text[10].append(str(record.INFO['GTS'][0])+'='+str(record.INFO['EA_GTC'][0])+' / '+str(record.INFO['GTS'][1])+'='+str(record.INFO['EA_GTC'][1]))
+            except KeyError:
+                pass
+            try:
+                text[11].append(str(record.INFO['GTS'][0])+'='+str(record.INFO['AA_GTC'][0])+' / '+str(record.INFO['GTS'][1])+'='+str(record.INFO['AA_GTC'][1]))
+            except KeyError:
+                pass
+            try:
+                text[12].append(str(record.INFO['GTS'][0])+'='+str(record.INFO['GTC'][0])+' / '+str(record.INFO['GTS'][1])+'='+str(record.INFO['GTC'][1]))
+            except KeyError:
+                pass
+            try:
+                text[13].append(str(record.INFO['DP']))
+            except KeyError:
+                pass
             FG = str(record.INFO['FG'][0])
             if FG.startswith('NM'):
                 GVS = FG.split(':')
-                text[14].append(GVS[1])
+                try:
+                    text[14].append(GVS[1])
+                except KeyError:
+                    pass
             else:
-                text[14].append(FG)
+                try:
+                    text[14].append(FG)
+                except KeyError:
+                    pass
+            try:
+                text[15].append(str(record.INFO['CDS_SIZES'][0]))
+            except KeyError:
+                pass
+            gene1 = record.INFO['GL'][0]
+            try:
+                gene2 = record.INFO['GL'][1]
+                try:
+                    text[16].append(gene2)
+                except KeyError:
+                    pass
+            except IndexError:
+                try:
+                    text[16].append(gene1)
+                except KeyError:
+                    pass
+            try:
+                text[17].append(str(record.INFO['GRCh38_POSITION'][0]))
+            except KeyError:
+                pass
+
             if ID!='None':
                 if ID.startswith('rs'):
                     text[2].append(('http://www.ncbi.nlm.nih.gov/projects/SNP/snp_ref.cgi?rs='+ID[2:], ID))
