@@ -46,6 +46,23 @@
            
         });
         </script>
+        
+        <script> 
+        $(document).ready(function() {
+            $('#id_exac_col_44').click(function(event) {  //on click
+                if(this.checked) { // check select status
+                    $('.add_all').each(function() { //loop through each checkbox
+                        this.checked = true;  //select all checkboxes with class "checkbox1"              
+                    });
+                }else{
+                    $('.add_all').each(function() { //loop through each checkbox
+                        this.checked = false; //deselect all checkboxes with class "checkbox1"                      
+                    });        
+                }
+            });
+           
+        });
+        </script>
 
     </head>
     <body >
