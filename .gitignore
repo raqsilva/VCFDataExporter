@@ -1,0 +1,10 @@
+db.sqlite3
+static/downloads/
+static/bcftools-1.2/
+static/tabix-0.2.6/
+polls/.*.swp
+polls/__pycache__/
+polls/migrations/__pycache__/
+pytera/key.txt
+pytera/__pycache__/
+

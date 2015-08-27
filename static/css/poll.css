@@ -1,0 +1,147 @@
+.page-header {
+    background-color: #142F52;
+    margin-top: 0;
+    padding: 2px 20px 20px 40px;
+}
+
+
+.page-header h1, .page-header h1 a {
+    color: #ffffff;
+    font-size: 25pt;
+    text-decoration: none;
+    line-height:22px;
+    margin-left: 40px;
+}
+
+
+h1 {
+    font-family: 'Architects Daughter', cursive;
+}
+
+
+h2, h3, h4 {
+  font-family: 'Source Sans Pro', sans-serif;
+}
+
+
+.prg-menu {
+  font-family: 'Source Sans Pro', sans-serif;
+  font-size: 12pt;
+  margin-right: 40px;
+  margin-left: 40px;
+  text-align: justify;
+
+}
+
+.web-app {
+  margin-right: 55px;
+  margin-left: 55px;
+}
+
+.button_pos {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+}
+
+.button2_pos {
+    position: absolute;
+    left: 70px;
+    down: 10px;
+}
+
+.button_images {
+    position: absolute;
+    left: 70px;
+    down: 10px;
+}
+
+.button3_pos {
+    position: absolute;
+    left: 550px;
+    top: 157px;
+}
+
+.button4_pos {
+    position: absolute;
+    left: 300px;
+    top: 157px;
+}
+
+.button_header {
+    position: absolute;
+    color: white;
+    left: 300px;
+    top: 85px;
+}
+
+.button_tool {
+    position: absolute;
+    color: white;
+    left: 400px;
+    top: 85px;
+}
+
+.button_docs {
+    position: absolute;
+    color: white;
+    left: 500px;
+    top: 85px;
+}
+
+.button_login {
+    position: absolute;
+    color: white;
+    left: 650px;
+    top: 85px;
+}
+
+.button_register {
+    position: absolute;
+    color: white;
+    left: 765px;
+    top: 85px;
+}
+
+.button_contact {
+    position: absolute;
+    color: white;
+    left: 895px;
+    top: 85px;
+}
+
+.box_docs {
+    width: 30%;
+    float: right;
+    padding: 15px;
+}
+
+.box_tool {
+    width: 70%;
+    float: left;
+    padding: 25px;
+}
+
+.box_picker {
+    float: left;
+    padding: 15px;
+    line-height: 25px;
+    width: 260px;
+}
+
+.box_input {
+    float: left;
+    width: 100%;
+}
+
+.box_columns {
+    float: left;
+    padding: 18px;
+    line-height: 28px;
+    width: 330px;
+}
+
+
+
+
+

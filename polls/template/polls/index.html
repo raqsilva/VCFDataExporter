@@ -1,0 +1,32 @@
+{% extends 'polls/base.html' %}
+
+{% block content %}
+
+<div id="tabs">
+  <ul>
+    <li><a href="#frag1" class="prg-menu"><span>Introduction</span></a></li>
+    <li><a href="#frag2" class="prg-menu"><span>Web App</span></a></li>
+  </ul>
+  <div id="frag1">
+    <p class="prg-menu"><i>The 1000 Genomes Project (1000GP) aims to obtain a full inventory with the diversity of human DNA by sequencing genomes using next-generation sequencing (NGS) technologies, documenting all human genetic variation. This project uses genomes of anonymous people from populations around the world with the final aim of finding all variants that have frequencies of at least 1% in the populations studied.</i></p>
+
+    <p class="prg-menu"><i>Currently we are employing files released in phase3, the final phase of the project, corresponding to 2504 samples from 26 populations categorized in 5 super-populations by continent: East Asian (EAS), South Asian (SAS), African (AFR), European (EUR) and American (AMR). This dataset is freely accessible from a public FTP server in compressed files (GNU Zip extension). The gene sequence variations are kept in a specific file format called Variant Call Format (VCF), version 4.1. It has become the standard format for storing variants identified in NGS and other studies.</i></p>
+
+    <p class="prg-menu"><i>VCF files have meta-information lines and a header line that has eight fixed fields including chromosome (CHROM), position (POS), known variant identifications (ID), reference allele (REF), alternate allele(s) (ALT), variant quality score (QUAL), filter information summarizing why a variant was or was not considered valid by the variant calling software (FILTER), and an information field (INFO). Additional fields containing genotypes for one or more samples may also be present. In our VCF files we have the FORMAT column and multiple sample columns.</i></p>
+
+    <p class="prg-menu"><i>Each row of the file contains information about observed variants at the given position and chromosome. Files can contain information for a single or multiple samples corresponding to one or more columns, each column with double information (genotype) for autosomal chromosomes.</i></p>
+  </div>
+  <div id="frag2">
+    <p class="prg-menu"><i>We are currently implementing our parser to some compressed VCF files, retrieving information and saving it into three different file formats for analyzing genotypic data, being rdf, ped and map.</i></p>
+
+    <p class="prg-menu"><i>The ped and map formats are complementing type of files that are the most commonly used type of format in GWAS and they were implemented by the software PLINK (Purcell et al. 2007). The transformation from the retrieved VCF files data to these files is very straightforward.</i></p>
+  </p>
+  </div>
+</div>
+<script>$( "#tabs" ).tabs();</script>
+
+
+<!--
+<p class='button_pos'><a href="/accounts/logout/" class="btn btn-primary" role="button"><span class="glyphicon glyphicon-off" aria-hidden="true"></span> Logout </a></p>
+-->
+{% endblock %}

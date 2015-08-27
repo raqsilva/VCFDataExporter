@@ -1,0 +1,18 @@
+{% extends 'polls/base.html' %}
+
+{% block content %}
+<div class="web-app">
+{% block title %}Reset Password{% endblock %}
+
+{% block mainblock %}
+
+    <form method="post">
+        {% csrf_token %}
+        <br>
+        {{ form.as_p }}
+        <button type="submit">Submit</button>
+    </form>
+</div>
+{% endblock %}
+
+{% endblock %}

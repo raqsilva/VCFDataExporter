@@ -1,0 +1,293 @@
+{% extends 'polls/base.html' %}
+
+{% block content %}
+
+<div class="box_tool">
+		<div class="web-app">
+		<div id="messages">
+			{% if messages %}
+				{% for message in messages %}
+					<div class="alert alert-{{ message.tags }}">
+						{{ message }}
+					</div>
+				{% endfor %}
+			{% endif %}
+		</div>
+				<form action="" method="POST" enctype="multipart/form-data">
+					{% csrf_token %}
+					<div><h4><i><b>1- </b>Choose Dataset</i></h4></div><br>
+					<b><a href="javascript:showonlyone('newboxes1');" >1000 Genomes Project</a></b>&nbsp; &nbsp; &nbsp; &nbsp;
+					<b><a href="javascript:showonlyone('newboxes2');" >Exome Sequencing Project</a></b>&nbsp; &nbsp; &nbsp; &nbsp;
+					<b><a href="javascript:showonlyone('newboxes3');" >ExAC</a></b>&nbsp; &nbsp; &nbsp; &nbsp;
+					<b><a href="javascript:showonlyone('newboxes4');" >Upload your VCF file</a></b>
+						<br><br>
+				<div><h4><i><b>2- </b>Choose the chromosome and region to handle</i></h4></div><br>
+				  {{ form.as_p }}
+				  <br>
+				  {{ region.as_p }}
+				  
+		<div class="newboxes" id="newboxes1" style="display: block">
+				<div><h5><i><b>Note: </b>It's being used the GRCh37 Assembly</i></h5></div><br>
+				<div><h4><i><b>3- </b>Type of file format you want to export</i></h4></div><br> 
+				  {{ frmt }}
+<br>
+<br>
+<div><h4><i><b>4- </b>Pick your populations</i></h4></div><br> 
+<div class="box_picker">	
+<label for="id_populations_0">Populations:</label><ul id="id_populations">
+<li>European Ancestry (EUR)<ul id="id_populations_0">
+<li><label for="id_populations_0_0"><input class="checkbox1" id="id_populations_0_0" name="populations" value="GBR" type="checkbox"> GBR</label></li>
+<li><label for="id_populations_0_1"><input class="checkbox1" id="id_populations_0_1" name="populations" value="FIN" type="checkbox"> FIN</label></li>
+<li><label for="id_populations_0_2"><input class="checkbox1" id="id_populations_0_2" name="populations" value="IBS" type="checkbox"> IBS</label></li>
+<li><label for="id_populations_0_3"><input class="checkbox1" id="id_populations_0_3" name="populations" value="TSI" type="checkbox"> TSI</label></li>
+<li><label for="id_populations_0_4"><input class="checkbox1" id="id_populations_0_4" name="populations" value="CEU" type="checkbox"> CEU</label></li>
+</ul></li>
+<li>Americas Ancestry (AMR)<ul id="id_populations_1">
+<li><label for="id_populations_1_0"><input class="checkbox1" id="id_populations_1_0" name="populations" value="CLM" type="checkbox"> CLM</label></li>
+<li><label for="id_populations_1_1"><input class="checkbox1" id="id_populations_1_1" name="populations" value="MXL" type="checkbox"> MXL</label></li>
+<li><label for="id_populations_1_2"><input class="checkbox1" id="id_populations_1_2" name="populations" value="PEL" type="checkbox"> PEL</label></li>
+<li><label for="id_populations_1_3"><input class="checkbox1" id="id_populations_1_3" name="populations" value="PUR" type="checkbox"> PUR</label></li>
+</ul></li>
+</ul>
+</div>
+<div class="box_picker"><ul id="id_populations">
+<li>South Asian Ancestry (SAS)<ul id="id_populations_2">
+<li><label for="id_populations_2_0"><input class="checkbox1" id="id_populations_2_0" name="populations" value="BEB" type="checkbox"> BEB</label></li>
+<li><label for="id_populations_2_1"><input class="checkbox1" id="id_populations_2_1" name="populations" value="GIH" type="checkbox"> GIH</label></li>
+<li><label for="id_populations_2_2"><input class="checkbox1" id="id_populations_2_2" name="populations" value="ITU" type="checkbox"> ITU</label></li>
+<li><label for="id_populations_2_3"><input class="checkbox1" id="id_populations_2_3" name="populations" value="PJL" type="checkbox"> PJL</label></li>
+<li><label for="id_populations_2_4"><input class="checkbox1" id="id_populations_2_4" name="populations" value="STU" type="checkbox"> STU</label></li>
+</ul></li>
+<li>East Asian Ancestry (EAS)<ul id="id_populations_3">
+<li><label for="id_populations_3_0"><input class="checkbox1" id="id_populations_3_0" name="populations" value="CDX" type="checkbox"> CDX</label></li>
+<li><label for="id_populations_3_1"><input class="checkbox1" id="id_populations_3_1" name="populations" value="CHB" type="checkbox"> CHB</label></li>
+<li><label for="id_populations_3_2"><input class="checkbox1" id="id_populations_3_2" name="populations" value="JPT" type="checkbox"> JPT</label></li>
+<li><label for="id_populations_3_3"><input class="checkbox1" id="id_populations_3_3" name="populations" value="KHV" type="checkbox"> KHV</label></li>
+<li><label for="id_populations_3_4"><input class="checkbox1" id="id_populations_3_4" name="populations" value="CHS" type="checkbox"> CHS</label></li>
+</ul></li>
+</ul>
+</div>
+<div class="box_picker"><ul id="id_populations">
+<li>African Ancestry (AFR)<ul id="id_populations_4">
+<li><label for="id_populations_4_0"><input class="checkbox1" id="id_populations_4_0" name="populations" value="ASW" type="checkbox"> ASW</label></li>
+<li><label for="id_populations_4_1"><input class="checkbox1" id="id_populations_4_1" name="populations" value="ACB" type="checkbox"> ACB</label></li>
+<li><label for="id_populations_4_2"><input class="checkbox1" id="id_populations_4_2" name="populations" value="ESN" type="checkbox"> ESN</label></li>
+<li><label for="id_populations_4_3"><input class="checkbox1" id="id_populations_4_3" name="populations" value="GWD" type="checkbox"> GWD</label></li>
+<li><label for="id_populations_4_4"><input class="checkbox1" id="id_populations_4_4" name="populations" value="LWK" type="checkbox"> LWK</label></li>
+<li><label for="id_populations_4_5"><input class="checkbox1" id="id_populations_4_5" name="populations" value="MSL" type="checkbox"> MSL</label></li>
+<li><label for="id_populations_4_6"><input class="checkbox1" id="id_populations_4_6" name="populations" value="YRI" type="checkbox"> YRI</label></li>
+</ul></li>
+<br>
+<li>Add All Existing Populations<ul>
+<li><label ><input id="id_populations_5_0" type="checkbox"> Add All</label></li>
+</ul></li>
+</ul>
+</div>
+<br>
+</div>
+<div class="newboxes" id="newboxes2" style="display: none">
+				<div><h5><i><b>Note: </b>It's being used the GRCh37 Assembly</i></h5></div><br>
+				<div><h4><i><b>3- </b>Pick the Populations</i></h4></div><br> 
+				  {{ evs }}
+<br>
+<br>
+				<div><h4><i><b>4- </b>Type of file format you want to export</i></h4></div><br> 
+				  {{ evs_form }}
+<br>
+<br>
+				<div><h4><i><b>5- </b>Filter VCF file by Minor Allele Frequency (MAF) in percent, choose the parameters</i></h4></div><br> 
+						{{ maf.as_p }}
+<br>
+
+<div class="box_columns"
+    <label for="id_columns_0">
+        Columns:
+    </label>
+    <ul id="id_columns">
+        <li>
+            <label for="id_columns_0">
+                <input class="column1" id="id_columns_0" type="checkbox" value="EA_AC" name="columns"></input>
+                 EA Allele Count
+            </label>
+        </li>
+        <li>
+            <label for="id_columns_1">
+                <input class="column1" id="id_columns_1" type="checkbox" value="AA_AC" name="columns"></input>
+                 AA Allele Count
+            </label>
+        </li>
+        <li>
+            <label for="id_columns_2">
+                <input class="column1" id="id_columns_2" type="checkbox" value="TAC" name="columns"></input>
+                 Total Allele Count
+            </label>
+        </li>
+        <li>
+            <label for="id_columns_3">
+                <input class="column1" id="id_columns_3" type="checkbox" value="MAF" name="columns"></input>
+                 Minor Allele Frequency
+            </label>
+        </li>
+        <li>
+            <label for="id_columns_4">
+                <input class="column1" id="id_columns_4" type="checkbox" value="GRCh38_POSITION" name="columns"></input>
+                 GRCh38 Position
+            </label>
+        </li>
+        <li>
+            <label for="id_columns_5">
+                <input class="column1" id="id_columns_5" type="checkbox" value="EA_GTC" name="columns"></input>
+                 EA Genotype Count
+            </label>
+        </li>
+</div>
+<div class="box_columns">	
+        <li>
+            <label for="id_columns_6">
+                <input class="column1" id="id_columns_6" type="checkbox" value="AA_GTC" name="columns"></input>
+                 AA Genotype Count
+            </label>
+        </li>
+        <li>
+            <label for="id_columns_7">
+                <input class="column1" id="id_columns_7" type="checkbox" value="GTC" name="columns"></input>
+                 Total Genotype Count
+            </label>
+        </li>
+        <li>
+            <label for="id_columns_8">
+                <input class="column1" id="id_columns_8" type="checkbox" value="DP" name="columns"></input>
+                 Average Sample Read Depth
+            </label>
+        </li>
+        <li>
+            <label for="id_columns_9">
+                <input class="column1" id="id_columns_9" type="checkbox" value="FG" name="columns"></input>
+                 Function GVS
+            </label>
+        </li>
+        <li>
+            <label for="id_columns_10">
+                <input class="column1" id="id_columns_10" type="checkbox" value="CDS_SIZES" name="columns"></input>
+                 Coding DNA Sizes
+            </label>
+        </li>
+        <li>
+            <label for="id_columns_11">
+                <input class="column1" id="id_columns_11" type="checkbox" value="GL" name="columns"></input>
+                 Genes
+            </label>
+        </li>
+        <li>
+            <label >
+                <input id="id_columns_12" type="checkbox"></input>
+                 Add All Columns
+            </label>
+        </li>
+    </ul>
+</div>
+<div class='box_input'><h5><i><b>Note: </b>EA - European American<br>AA - African American</i></h5></div><br>
+</div>
+<div class="newboxes" id="newboxes4" style="display: none">
+		<br>
+		<div><h4><i><b>3- </b>Choose to upload a file or if it is already uploaded provide the file name with extension</i></h4></div><br>
+		<b><a href="javascript:showonlyone2('boxes2');" >Upload File</a></b>&nbsp; &nbsp; &nbsp; &nbsp;
+	   <b><a href="javascript:showonlyone2('boxes1');" >Provide file name</a></b>&nbsp; &nbsp; &nbsp; &nbsp;
+					<br>
+					<div class="boxes" id="boxes1" style="display: none">
+					<br>
+					{{ upload_name }}
+					<div><h5><i><b>Ex: </b>filename.vcf.gz</i></h5></div>
+					</div>
+					<br>
+					<div class="boxes" id="boxes2" style="display: none">
+					<p>{{ upload_file.non_field_errors }}</p>
+					<p>{{ upload_file.docfile.label_tag }} {{ upload_file.docfile.help_text }}</p>
+					<p>
+						{{ upload_file.docfile.errors }}
+						{{ upload_file.docfile }}
+					</p>
+				<br>
+				</div>
+					<div><h4><i><b>4- </b>Choose samples</i></h4></div><br>
+					{{ sample_up }}
+				<div><h5><i><b>Note: </b>Provide comma separated sample(s) or leave blank if all</i></h5></div>
+		<br> <div><h4><i><b>5- </b>Type of file format you want to export</i></h4></div><br> 
+			<p>{{ form_up }}</p>
+			<div><h5><i><b>Note: </b>Excel file limits are 1,048,576 rows by 16,384 columns</i></h5></div><br>
+		<br>
+</div>
+		  <div class='box_input'><input type="submit"></div>
+		  
+		</form>
+
+</div>
+</div>
+
+<div class='box_docs'>
+		<div><h5><i>Documents Uploaded and Created</i></h5></div>
+		{% if documents %}
+	<ul>
+		{% for document in documents %}
+		<li><a href="{{ document.docfile.url }}" download>{{ document.docfile.name }}</a></li>
+		{% endfor %}
+	</ul>
+	{% else %}
+		<p>No documents.</p>
+	{% endif %}
+	<br>
+		<div><h5><i>Plots Created</i></h5></div>
+		{% if plots %}
+	<ul>
+		{% for plot in plots %}
+		<li><a href="{{ plot.pdf.url }}" download>{{ plot.pdf.name }}</a></li>
+		{% endfor %}
+	</ul>
+	{% else %}
+		<p>No plots</p>
+	{% endif %}
+</div>
+
+  
+  
+
+<script language="javascript"> 
+function showonlyone(thechosenone) {
+      var newboxes = document.getElementsByTagName("div");
+            for(var x=0; x<newboxes.length; x++) {
+                  name = newboxes[x].getAttribute("class");
+                  if (name == 'newboxes') {
+                        if (newboxes[x].id == thechosenone) {
+                        newboxes[x].style.display = 'block';
+                  }
+                  else {
+                        newboxes[x].style.display = 'none';
+                  }
+            }
+      }
+}
+</script>
+
+<script language="javascript"> 
+function showonlyone2(thechosenone) {
+      var boxes = document.getElementsByTagName("div");
+            for(var x=0; x<boxes.length; x++) {
+                  name = boxes[x].getAttribute("class");
+                  if (name == 'boxes') {
+                        if (boxes[x].id == thechosenone) {
+                        boxes[x].style.display = 'block';
+                  }
+                  else {
+                        boxes[x].style.display = 'none';
+                  }
+            }
+      }
+}
+</script>
+
+
+
+<!--
+<p class='button_pos'><a href="/accounts/logout/" class="btn btn-primary" role="button"><span class="glyphicon glyphicon-off" aria-hidden="true"></span> Logout </a></p>
+-->
+{% endblock %}

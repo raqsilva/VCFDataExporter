@@ -1,0 +1,40 @@
+{% extends 'polls/base.html' %}
+
+{% block content %}
+<div class="web-app">
+    <div><h4><i>Documents Uploaded and Created</i></h4></div>
+	{% if documents %}
+	<ul>
+		{% for document in documents %}
+		<li><a href="{{ document.docfile.url }}" download>{{ document.docfile.name }}</a></li>
+		{% endfor %}
+	</ul>
+	{% else %}
+		<p>No documents.</p>
+	{% endif %}
+	<br>
+<div><p class='button2_pos'><a href="{% url 'polls.views.clear' %}" class="btn btn-primary" role="button"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Clear Documents </a></p></div>
+<br>
+<br>
+<br>
+</div>
+<div class="web-app">
+    <div><h4><i>Plots Created</i></h4></div>
+	{% if plots %}
+	<ul>
+		{% for plot in plots %}
+		<li><a href="{{ plot.pdf.url }}" download>{{ plot.pdf.name }}</a></li>
+		{% endfor %}
+	</ul>
+	{% else %}
+		<p>No plots</p>
+	{% endif %}
+<br>
+
+<p class='button_images'><a href="{% url 'polls.views.clear_images' %}" class="btn btn-primary" role="button"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Clear Images </a></p>
+<br>
+<br>
+</div>
+<br>
+<br>
+{% endblock %}

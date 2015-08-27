@@ -1,0 +1,106 @@
+{% load staticfiles %}
+<html>
+    <head>
+        <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:600italic' rel='stylesheet' type='text/css'>
+        <link href='http://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet' type='text/css'>
+        <title>VcfDataExporter</title>
+        <meta charset="utf-8">
+        <link rel="icon" href="{% static 'images/favicon.ico' %}">
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+        <link rel="stylesheet" href="{% static 'css/poll.css' %}">
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+        <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+        <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+        <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script> <!-- message alert -->
+        <script> 
+        $(document).ready(function() {
+            $('#id_populations_5_0').click(function(event) {  //on click
+                if(this.checked) { // check select status
+                    $('.checkbox1').each(function() { //loop through each checkbox
+                        this.checked = true;  //select all checkboxes with class "checkbox1"              
+                    });
+                }else{
+                    $('.checkbox1').each(function() { //loop through each checkbox
+                        this.checked = false; //deselect all checkboxes with class "checkbox1"                      
+                    });        
+                }
+            });
+           
+        });
+        </script>
+        
+        <script> 
+        $(document).ready(function() {
+            $('#id_columns_12').click(function(event) {  //on click
+                if(this.checked) { // check select status
+                    $('.column1').each(function() { //loop through each checkbox
+                        this.checked = true;  //select all checkboxes with class "checkbox1"              
+                    });
+                }else{
+                    $('.column1').each(function() { //loop through each checkbox
+                        this.checked = false; //deselect all checkboxes with class "checkbox1"                      
+                    });        
+                }
+            });
+           
+        });
+        </script>
+
+    </head>
+    <body >
+        <div class="page-header">
+            
+            <h1><p>Vcf</p><p>Data</p><p>Exporter</p></h1>
+            
+            <a href="{% url 'polls.views.index' %}">
+            <p class='button_header'>
+                <span class="glyphicon glyphicon-home" aria-hidden="true"></span>
+                Home
+            </p>
+            </a>
+            <a href="{% url 'polls.views.file_frmt_view_up' %}">
+            <p class='button_tool'>
+                <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                Tool
+            </p>
+            </a>
+            <a href="{% url 'polls.views.result' %}">
+            <p class='button_docs'>
+                <span class="glyphicon glyphicon-folder-open" aria-hidden="true"></span>
+                Documents
+            </p>
+            </a>
+            {% if user.is_authenticated %}
+            <a href="{% url 'pytera.views.logout' %}">
+            <p class='button_login'>
+                <span class="glyphicon glyphicon-off" aria-hidden="true"></span>
+                Logout
+            </p>
+            {% else %}
+            <a href="{% url 'pytera.views.login' %}">
+            <p class='button_login'>
+                <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+                Login
+            </p>
+            {% endif %}
+            </a>
+            <a href="{% url 'pytera.views.register_user' %}">
+            <p class='button_register'>
+                <span class="glyphicon glyphicon-import" aria-hidden="true"></span>
+                Register
+            </p>
+            </a>
+            <a href="#">
+            <p class='button_contact'>
+                <span class="glyphicon glyphicon-phone-alt" aria-hidden="true"></span>
+                Contacts
+            </p>
+            </a>
+    
+        </div>
+            {% block content %}
+            {% endblock %}
+    </body>
+</html>
+
