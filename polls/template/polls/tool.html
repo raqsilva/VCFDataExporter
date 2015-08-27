@@ -88,13 +88,32 @@
 <div class="newboxes" id="newboxes2" style="display: none">
 				<div><h5><i><b>Note: </b>It's being used the GRCh37 Assembly</i></h5></div><br>
 				<div><h4><i><b>3- </b>Type of file format you want to export</i></h4></div><br> 
-				  {{ evs_form }}
+				  <!--{{ evs_form }}-->
+				  
+
+		
+<select id="id_esp_format" name="esp_format" onchange="SelectHandler(this)">
+    <option selected="selected" value=""></option>
+    <option value="xlsx">
+        Excel(.xlsx)
+    </option>
+    <option value="vcf">
+        VCF
+    </option>
+</select>
+
+	
 <br>
 <br>
+<div id='select_vcf' hidden=True>
+		
 				<div><h4><i><b>4- </b>Filter VCF file by Minor Allele Frequency (MAF) in percent, choose the parameters</i></h4></div><br> 
 						{{ maf.as_p }}
-<br>
-<div><h4><i><b>5- </b>Pick the columns you want to add to the excel file</i></h4></div><br> 
+						
+</div>
+
+<div id='select_xlsx' hidden=True>
+<div><h4><i><b>4- </b>Pick the columns you want to add to the excel file</i></h4></div><br> 
 <div class="box_columns"
     <label for="id_columns_0">
         Columns:
@@ -184,6 +203,8 @@
 </div>
 <div class='box_input'><h5><i><b>Note: </b>Chrom, POS, ID, Type, REF and ALT are standard columns<br>EA - European American<br>AA - African American</i></h5></div><br>
 </div>
+</div>
+
 <div class="newboxes" id="newboxes4" style="display: none">
 		<br>
 		<div><h4><i><b>3- </b>Choose to upload a file or if it is already uploaded provide the file name with extension</i></h4></div><br>
@@ -211,8 +232,7 @@
 		<br> <div><h4><i><b>5- </b>Type of file format you want to export</i></h4></div><br> 
 			<p>{{ form_up }}</p>
 			<div><h5><i><b>Note: </b>Excel file limits are 1,048,576 rows by 16,384 columns</i></h5></div><br>
-		<br>
-</div>
+</div><br>
 		  <div class='box_input'><input type="submit"></div>
 		  
 		</form>
@@ -279,6 +299,19 @@ function showonlyone2(thechosenone) {
             }
       }
 }
+</script>
+
+<script language="javascript"> 
+function SelectHandler(select){
+		if(select.value == 'xlsx'){
+				$("#select_xlsx").show()
+				$("#select_vcf").hide();
+								}
+		else if(select.value == 'vcf'){
+				$("#select_vcf").show();
+				$("#select_xlsx").hide();
+				}
+		}
 </script>
 
 
