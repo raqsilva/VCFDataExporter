@@ -1,7 +1,54 @@
 
 import collections
 
-column_dic = {
+exac_col_dic = {'AC':"Allele count in genotypes, for each ALT allele",
+'AC_AFR':"African/African American Allele Counts",
+'AC_AMR':"American Allele Counts",
+'AC_Adj':"Adjusted Allele Counts",
+'AC_EAS':"East Asian Allele Counts",
+'AC_FIN':"Finnish Allele Counts",
+'AC_Hemi':"Adjusted Hemizygous Counts",
+'AC_Hom':"Adjusted Homozygous Counts",
+'AC_NFE':"Non-Finnish European Allele Counts",
+'AC_OTH':"Other Allele Counts",
+'AC_SAS':"South Asian Allele Counts",
+'AF':"Allele Frequency, for each ALT allele",
+'AN':"Total number of alleles in called genotypes",
+'AN_AFR':"African/African American Chromosome Count",
+'AN_AMR':"American Chromosome Count",
+'AN_Adj':"Adjusted Chromosome Count",
+'AN_EAS':"East Asian Chromosome Count",
+'AN_FIN':"Finnish Chromosome Count",
+'AN_NFE':"Non-Finnish European Chromosome Count",
+'AN_OTH':"Other Chromosome Count",
+'AN_SAS':"South Asian Chromosome Count",
+'GQ':"Mean of all GQ values",
+'GQ_STDDEV':"Standard deviation of all GQ values",
+'Hemi_AFR':"African/African American Hemizygous Counts",
+'Hemi_AMR':"American Hemizygous Counts",
+'Hemi_EAS':"East Asian Hemizygous Counts",
+'Hemi_FIN':"Finnish Hemizygous Counts",
+'Hemi_NFE':"Non-Finnish European Hemizygous Counts",
+'Hemi_OTH':"Other Hemizygous Counts",
+'Hemi_SAS':"South Asian Hemizygous Counts",
+'Het_AFR':"African/African American Heterozygous Counts",
+'Het_AMR':"American Heterozygous Counts",
+'Het_EAS':"East Asian Heterozygous Counts",
+'Het_FIN':"Finnish Heterozygous Counts",
+'Het_NFE':"Non-Finnish European Heterozygous Counts",
+'Het_OTH':"Other Heterozygous Counts",
+'Het_SAS':"South Asian Heterozygous Counts",
+'Hom_AFR':"African/African American Homozygous Counts",
+'Hom_AMR':"American Homozygous Counts",
+'Hom_EAS':"East Asian Homozygous Counts",
+'Hom_FIN':"Finnish Homozygous Counts",
+'Hom_NFE':"Non-Finnish European Homozygous Counts",
+'Hom_OTH':"Other Homozygous Counts",
+'Hom_SAS':"South Asian Homozygous Counts"}
+
+
+
+esp_col_dic = {
         'EA_AC':(6, 'European American Allele Count'), 'AA_AC':(7, 'African American Allele Count'), 'TAC':(8, 'Total Allele Count'), 'MAF':(9, 'Minor Allele Frequency'),
         'EA_GTC':(10, 'European American Genotype Counts'), 'AA_GTC':(11, 'African American Genotype Count'), 'GTC':(12, 'Total Genotype Count'),
         'DP':(13, 'Average Sample Read Depth'), 'FG':(14, 'Function GVS'), 'CDS_SIZES':(15, 'Coding DNA Sizes'), 'GL':(16, 'Genes'), 'GRCh38_POSITION':(17, 'GRCh38_POSITION')
