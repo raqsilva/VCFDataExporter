@@ -3,10 +3,10 @@ from django.http import HttpResponse
 from django.core.files import File
 import xlsxwriter
 import os
-from .vcf_functions import getBasePath, save, getFilePath, save_pdf, save_excel, parse_fasta
+from .vcf_functions import getBasePath, save_binary, getFilePath, save_pdf, parse_fasta
 import subprocess
 import collections
-from .dictionaries import column_dic
+from .dictionaries import esp_col_dic
 
 
 #PYTERA_PATH = str(os.getenv('PYTERA_PATH'))
@@ -26,7 +26,7 @@ def evs_xlsx_file(chromo, start, stop, named_file, user_profile, columns):
     
     text = {}
     for key in columns:
-        text[column_dic[key][0]] = [column_dic[key][1]]
+        text[esp_col_dic[key][0]] = [esp_col_dic[key][1]]
         
     text[0] = ['CHROM'] 
     text[1] = ['POS'] 
@@ -95,7 +95,7 @@ def evs_xlsx_file(chromo, start, stop, named_file, user_profile, columns):
             try:
                 gene2 = record.INFO['GL'][1]
                 try:
-                    text[16].append(gene2)
+                    text[16].append(str(gene1)+'/'+str(gene2))
                 except KeyError:
                     pass
             except IndexError:
@@ -120,7 +120,7 @@ def evs_xlsx_file(chromo, start, stop, named_file, user_profile, columns):
     
     text = collections.OrderedDict(sorted(text.items()))
     
-    workbook = xlsxwriter.Workbook(basePath+'/excel_doc-'+str(chromo)+'-'+str(start)+'-'+str(stop)+'.xlsx')
+    workbook = xlsxwriter.Workbook(basePath+'/excel_esp-'+str(chromo)+'-'+str(start)+'-'+str(stop)+'.xlsx')
     link_format = workbook.add_format({'color': 'blue', 'underline': 1})
     worksheet = workbook.add_worksheet()
     worksheet.set_column(5, 20, 18)
@@ -145,18 +145,18 @@ def evs_xlsx_file(chromo, start, stop, named_file, user_profile, columns):
                     row = row + 1
         col = col + 1
     workbook.close()
-    file = 'excel_doc-'+str(chromo)+'-'+str(start)+'-'+str(stop)+'.xlsx'
-    save_excel(file, user_profile)
-    os.remove(basePath+'/excel_doc-'+str(chromo)+'-'+str(start)+'-'+str(stop)+'.xlsx')
+    file = 'excel_esp-'+str(chromo)+'-'+str(start)+'-'+str(stop)+'.xlsx'
+    save_binary(file, user_profile)
+    os.remove(basePath+'/excel_esp-'+str(chromo)+'-'+str(start)+'-'+str(stop)+'.xlsx')
     os.remove(basePath+"/subset.vcf")
     os.remove(baseName+".gz")
     os.remove(baseName+".gz.tbi")
     
-    path = basePath+'/documents/excel_doc-'+str(chromo)+'-'+str(start)+'-'+str(stop)+'.xlsx'
+    path = basePath+'/documents/excel_esp-'+str(chromo)+'-'+str(start)+'-'+str(stop)+'.xlsx'
     with open(path, "rb") as excel:
         data = excel.read()
     response = HttpResponse( data, content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
-    response['Content-Disposition'] = 'attachment; filename=' + 'excel_doc-'+str(start)+'-'+str(stop)+'.xlsx'
+    response['Content-Disposition'] = 'attachment; filename=' + 'excel_esp-'+str(start)+'-'+str(stop)+'.xlsx'
     return response
 
 
@@ -382,7 +382,7 @@ def filter_vcf(chromo, start, stop, named_file, user_profile, ea, aa, total, ea_
     subprocess.call(PYTERA_PATH+"/static/tabix-0.2.6/bgzip -c -f "+basePath+"/"+named_file.split('.')[0] +".subset.vcf"+' > '+basePath+"/"+named_file.split('.')[0] +".subset.vcf.gz", shell=True)
     
     file = named_file.split('.')[0] +".subset.vcf.gz"
-    save_excel(file, user_profile)
+    save_binary(file, user_profile)
     os.remove(basePath+"/"+named_file.split('.')[0] +".subset.vcf.gz")
     os.remove(basePath+"/"+named_file.split('.')[0] +".subset.vcf")
     os.remove(basePath+"/subset.vcf")

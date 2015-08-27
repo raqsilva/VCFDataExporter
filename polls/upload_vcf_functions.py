@@ -3,9 +3,10 @@ from django.http import HttpResponse
 from django.core.files import File
 import xlsxwriter
 import os
-from .vcf_functions import getBasePath, save, getFilePath, save_pdf, save_excel, parse_fasta
+from .vcf_functions import getBasePath, save_binary, getFilePath, save_pdf, parse_fasta
 import subprocess
 import collections
+
 
 #PYTERA_PATH = str(os.getenv('PYTERA_PATH'))
 PYTERA_PATH = '/usr/local/share/applications/pytera'
@@ -71,7 +72,7 @@ def xlsx_file(chromo, start, stop, named_file, user_profile):
     workbook.close()
 
     file = 'excel_doc-'+str(chromo)+'-'+str(start)+'-'+str(stop)+'.xlsx'
-    save_excel(file, user_profile)
+    save_binary(file, user_profile)
     os.remove(basePath+'/excel_doc-'+str(chromo)+'-'+str(start)+'-'+str(stop)+'.xlsx')
     os.remove(PYTERA_PATH+"/static/downloads/subset.vcf")
     os.remove(baseName+".gz")
@@ -205,7 +206,7 @@ def get_fasta(chromo, start, stop, named_file, user_profile, spec_samples):
         file.write(str(reg_b)+"\n")
     file.close()
     file1 = "FASTA-"+str(chromo)+"-"+str(start)+"-"+str(stop)+".fasta"
-    save(file1, user_profile)
+    save_binary(file1, user_profile)
     os.remove(basePath+"/FASTA-"+str(chromo)+"-"+str(start)+"-"+str(stop)+".fasta")
     os.remove(PYTERA_PATH+"/static/downloads/subset.vcf")
     os.remove(baseName+".gz")

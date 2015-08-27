@@ -4,6 +4,7 @@ from django.http import HttpResponse
 from .vcf_functions import *
 from .upload_vcf_functions import *
 from .evs_vcf_functions import *
+from .exac_functions import *
 from .models import Document, UserProfile, Plot
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ValidationError
@@ -153,8 +154,10 @@ def file_frmt_view_up(request):
             evs_form = evs_format(request.POST)
             maf = maf_form(request.POST)
             esp_excel_columns = excel_columns(request.POST)
+            exac_excel_columns = exac_columns(request.POST)
+            exac_form = exac_format(request.POST)
             
-            if form.is_valid() and picker.is_valid() and region.is_valid() and frmt.is_valid() and form_up.is_valid() and upload_file.is_valid() and upload_name.is_valid() and sample_up.is_valid() and evs_form.is_valid() and maf.is_valid() and esp_excel_columns.is_valid():
+            if form.is_valid() and picker.is_valid() and region.is_valid() and frmt.is_valid() and form_up.is_valid() and upload_file.is_valid() and upload_name.is_valid() and sample_up.is_valid() and evs_form.is_valid() and maf.is_valid() and esp_excel_columns.is_valid() and exac_excel_columns.is_valid() and exac_form.is_valid():
                 chromo = form.cleaned_data.get('chromosome')
                 populations = picker.cleaned_data.get('populations')
                 start = region.cleaned_data.get('start')
@@ -170,6 +173,8 @@ def file_frmt_view_up(request):
                 aa_sign = maf.cleaned_data.get('aa_char')
                 total_sign = maf.cleaned_data.get('all_char')
                 esp_columns = esp_excel_columns.cleaned_data.get('columns')
+                exac_cols = exac_excel_columns.cleaned_data.get('exac_col')
+                format_exac = exac_form.cleaned_data.get('exac_form')
                 
                 #return HttpResponse(str(esp_columns))
                 
@@ -229,6 +234,8 @@ def file_frmt_view_up(request):
                     return filter_vcf(str(chromo), int(start), int(stop), doc_name, user_profile, ea, aa, total, ea_sign, aa_sign, total_sign)
                 elif format_evs=="xlsx":
                     return evs_xlsx_file(str(chromo), int(start), int(stop), doc_name, user_profile, list(esp_columns))
+                elif format_exac=='xlsx':
+                    return exac_xlsx_file(str(chromo), int(start), int(stop), doc_name, user_profile, list(exac_cols))
                     
                 return redirect('/documents/')
                 #return HttpResponse(str(samples))
@@ -245,12 +252,15 @@ def file_frmt_view_up(request):
             evs_form = evs_format()
             maf = maf_form()
             esp_excel_columns = excel_columns()
+            exac_excel_columns = exac_columns()
+            exac_form = exac_format()
             
     else:
         return redirect('/authentication/')
     return render(request, 'polls/tool.html', {'form':form, 'picker':picker, 'region':region, 'frmt':frmt, 'form_up':form_up,
                                                'upload_file':upload_file, 'upload_name':upload_name, 'sample_up':sample_up,
-                                               'documents': documents, 'plots':plots, 'evs_form':evs_form, 'maf':maf, 'esp_columns':esp_excel_columns}) 
+                                               'documents': documents, 'plots':plots, 'evs_form':evs_form, 'maf':maf, 'esp_columns':esp_excel_columns,
+                                               'exac_cols':exac_excel_columns, 'exac_form':exac_form}) 
 
 
 

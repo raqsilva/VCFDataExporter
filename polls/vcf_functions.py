@@ -24,21 +24,9 @@ def getFilePath(filename):
     return PYTERA_PATH+'/static/downloads/documents/'+str(filename)
 
 
-def save(filename, user_profile):
+def save_binary(filename, user_profile):
     basePath=getBasePath()
-    file=open(basePath+"/"+filename,"r")
-    django_file_1 = File(file)
-    doc = Document(docfile = django_file_1, user_profile = user_profile)
-    #doc = Document()
-    #doc.docfile.save(filename, django_file_1, save=True)
-    doc.save()
-    django_file_1.close()
-    file.close()
-
-
-def save_excel(filename, user_profile):
-    basePath=getBasePath()
-    file=open(basePath+"/"+filename,"rb")#read binary 
+    file=open(basePath+"/"+filename,"rb")
     django_file_1 = File(file)
     doc = Document(docfile = django_file_1, user_profile = user_profile)
     doc.save()
