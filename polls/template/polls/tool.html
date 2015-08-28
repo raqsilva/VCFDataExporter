@@ -13,7 +13,8 @@
 				{% endfor %}
 			{% endif %}
 		</div>
-				<form action="" method="POST" enctype="multipart/form-data">
+				<form action="" method="POST" enctype="multipart/form-data" >
+				
 					{% csrf_token %}
 					<div><h4><i><b>1- </b>Choose Dataset</i></h4></div><br>
 					<b><a href="javascript:showonlyone('newboxes1');" >1000 Genomes Project</a></b>&nbsp; &nbsp; &nbsp; &nbsp;
@@ -158,7 +159,8 @@
 			<p>{{ form_up }}</p>
 			<div><h5><i><b>Note: </b>Excel file limits are 1,048,576 rows by 16,384 columns</i></h5></div><br>
 </div><br>
-		  <div class='box_input'><input type="submit"></div>
+
+		  <div class='box_input'><input type="submit" id="sendbutton"/></div>
 		  <br><br>
 		</form>
 </div>
@@ -238,6 +240,8 @@ function SelectHandler(select){
 				}
 		}
 </script>
+
+
 
 
 

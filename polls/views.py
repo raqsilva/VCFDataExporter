@@ -85,8 +85,8 @@ def clear(request):
     return redirect('/documents/')
 
 
-def clear_images(request):
-    Plot.objects.filter(user_profile=request.user.userprofile).all().delete()
+def clear_vcf(request):
+    Vcf.objects.filter(user_profile=request.user.userprofile).all().delete()
     return redirect('/documents/')
 
 
