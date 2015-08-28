@@ -207,14 +207,7 @@ def file_frmt_view_up(request):
                     doc = request.FILES['docfile']
                     doc_name = str(doc.name)
                     newdoc.save()
-                    vcf_uploaded = PYTERA_PATH + '/static/downloads/documents/'+ doc_name
-                    mes = subprocess.call(PYTERA_PATH+'/static/vcftools_0.1.12b/bin/vcf-validator ' + vcf_uploaded, shell=True, env={'PERL5LIB': PYTERA_PATH+'/static/vcftools_0.1.12b/perl'})
-                    messages.add_message(request, messages.ERROR, mes)
-                    return render(request, 'polls/tool.html', {'form':form, 'picker':picker, 'region':region, 'frmt':frmt, 'form_up':form_up,
-                                                                'upload_file':upload_file, 'upload_name':upload_name, 'sample_up':sample_up,
-                                                                'documents': documents, 'vcf_files':vcf_files, 'evs_form':evs_form, 'maf':maf, 'esp_columns':esp_excel_columns,
-                                                                'exac_cols':exac_excel_columns, 'exac_form':exac_form}) 
-                    
+
                 except MultiValueDictKeyError:
                     pass
                 
@@ -243,9 +236,9 @@ def file_frmt_view_up(request):
                 elif format_form=="fasta_up":
                     return get_fasta(str(chromo), int(start), int(stop), doc_name, user_profile, spec_samples)
                 elif format_evs=="vcf":
-                    return filter_vcf(str(chromo), int(start), int(stop), doc_name, user_profile, ea, aa, total, ea_sign, aa_sign, total_sign)
+                    return filter_vcf(str(chromo), int(start), int(stop), user_profile, ea, aa, total, ea_sign, aa_sign, total_sign)
                 elif format_evs=="xlsx":
-                    return evs_xlsx_file(str(chromo), int(start), int(stop), doc_name, user_profile, list(esp_columns))
+                    return evs_xlsx_file(str(chromo), int(start), int(stop), user_profile, list(esp_columns))
                 elif format_exac=='xlsx':
                     return exac_xlsx_file(str(chromo), int(start), int(stop), doc_name, user_profile, list(exac_cols))
                     

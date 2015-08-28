@@ -3,7 +3,7 @@ from django.http import HttpResponse
 from django.core.files import File
 import xlsxwriter
 import os
-from .vcf_functions import getBasePath, save_binary, getFilePath, parse_fasta
+from .vcf_functions import getBasePath, save_binary, getFilePath, parse_fasta, getEspPath
 import subprocess
 import collections
 from .dictionaries import esp_col_dic
@@ -13,14 +13,11 @@ from .dictionaries import esp_col_dic
 PYTERA_PATH = '/usr/local/share/applications/pytera'
 
 
-def evs_xlsx_file(chromo, start, stop, named_file, user_profile, columns):
-    baseName=getFilePath(named_file)
+def evs_xlsx_file(chromo, start, stop, user_profile, columns):
     basePath=getBasePath()
+    espPath = getEspPath(chromo)
     
-    ##### add all ESP files provided### change subprocess ### change path
-    subprocess.call(PYTERA_PATH+"/static/tabix-0.2.6/bgzip -c -f "+baseName+' > '+baseName+'.gz', shell=True)
-    subprocess.call(PYTERA_PATH+"/static/tabix-0.2.6/tabix -f -p vcf "+baseName+".gz", shell=True)
-    subprocess.call(PYTERA_PATH+"/static/tabix-0.2.6/tabix -f -p vcf -h "+baseName+".gz"+" "+str(chromo)+":"+str(start)+"-"+str(stop)+" > "+PYTERA_PATH+"/static/downloads/subset.vcf", shell=True)
+    subprocess.call(PYTERA_PATH+"/static/tabix-0.2.6/tabix -f -p vcf -h "+espPath+" "+str(chromo)+":"+str(start)+"-"+str(stop)+" > "+PYTERA_PATH+"/static/downloads/subset.vcf", shell=True)
     
     vcf_reader = vcf.Reader(filename=PYTERA_PATH+"/static/downloads/subset.vcf")
     
@@ -149,8 +146,6 @@ def evs_xlsx_file(chromo, start, stop, named_file, user_profile, columns):
     save_binary(file, user_profile)
     os.remove(basePath+'/excel_esp-'+str(chromo)+'-'+str(start)+'-'+str(stop)+'.xlsx')
     os.remove(basePath+"/subset.vcf")
-    os.remove(baseName+".gz")
-    os.remove(baseName+".gz.tbi")
     
     path = basePath+'/documents/excel_esp-'+str(chromo)+'-'+str(start)+'-'+str(stop)+'.xlsx'
     with open(path, "rb") as excel:
@@ -162,17 +157,14 @@ def evs_xlsx_file(chromo, start, stop, named_file, user_profile, columns):
 
 
 # MAF Minor Allele Frequency in percent in the order of EA,AA,All
-def filter_vcf(chromo, start, stop, named_file, user_profile, ea, aa, total, ea_sign, aa_sign, total_sign):
-    baseName=getFilePath(named_file)
+def filter_vcf(chromo, start, stop, user_profile, ea, aa, total, ea_sign, aa_sign, total_sign):
     basePath=getBasePath()
-
-    ##### add all ESP files provided### change subprocess ### change path
-    subprocess.call(PYTERA_PATH+"/static/tabix-0.2.6/bgzip -c -f "+baseName+' > '+baseName+'.gz', shell=True)
-    subprocess.call(PYTERA_PATH+"/static/tabix-0.2.6/tabix -f -p vcf "+baseName+".gz", shell=True)
-    subprocess.call(PYTERA_PATH+"/static/tabix-0.2.6/tabix -f -p vcf -h "+baseName+".gz"+" "+str(chromo)+":"+str(start)+"-"+str(stop)+" > "+basePath+"/subset.vcf", shell=True)
+    espPath = getEspPath(chromo)
+    
+    subprocess.call(PYTERA_PATH+"/static/tabix-0.2.6/tabix -f -p vcf -h "+espPath+" "+str(chromo)+":"+str(start)+"-"+str(stop)+" > "+PYTERA_PATH+"/static/downloads/subset.vcf", shell=True)
     
     vcf_reader = vcf.Reader(filename=basePath+"/subset.vcf")
-    vcf_writer = vcf.Writer(open(basePath+"/"+ named_file.split('.')[0] +".subset.vcf", 'w'), vcf_reader)
+    vcf_writer = vcf.Writer(open(basePath+"/ESP.chr"+str(chromo)+".subset.vcf", 'w'), vcf_reader)
     
     if ea_sign=='<':
         if aa_sign=='<':
@@ -379,21 +371,19 @@ def filter_vcf(chromo, start, stop, named_file, user_profile, ea, aa, total, ea_
                         break
     
     
-    subprocess.call(PYTERA_PATH+"/static/tabix-0.2.6/bgzip -c -f "+basePath+"/"+named_file.split('.')[0] +".subset.vcf"+' > '+basePath+"/"+named_file.split('.')[0] +".subset.vcf.gz", shell=True)
+    subprocess.call(PYTERA_PATH+"/static/tabix-0.2.6/bgzip -c -f "+basePath+"/ESP.chr"+str(chromo)+".subset.vcf"+' > '+basePath+"/ESP.chr"+str(chromo)+".subset.vcf.gz", shell=True)
     
-    file = named_file.split('.')[0] +".subset.vcf.gz"
+    file = "ESP.chr"+str(chromo)+".subset.vcf.gz"
     save_binary(file, user_profile)
-    os.remove(basePath+"/"+named_file.split('.')[0] +".subset.vcf.gz")
-    os.remove(basePath+"/"+named_file.split('.')[0] +".subset.vcf")
+    os.remove(basePath+"/ESP.chr"+str(chromo)+".subset.vcf.gz")
+    os.remove(basePath+"/ESP.chr"+str(chromo)+".subset.vcf")
     os.remove(basePath+"/subset.vcf")
-    os.remove(baseName+".gz")
-    os.remove(baseName+".gz.tbi")
-    
-    path = basePath+"/documents/"+named_file.split('.')[0] +".subset.vcf.gz"
+
+    path = basePath+"/documents/"+"ESP.chr"+str(chromo)+".subset.vcf.gz"
     with open(path, "rb") as gzip:
         data = gzip.read()
     response = HttpResponse( data, content_type='application/x-gzip')
-    response['Content-Disposition'] = 'attachment; filename=' + named_file.split('.')[0] +".subset.vcf.gz"
+    response['Content-Disposition'] = 'attachment; filename=' + "ESP.chr"+str(chromo)+".subset.vcf.gz"
     return response
 
     

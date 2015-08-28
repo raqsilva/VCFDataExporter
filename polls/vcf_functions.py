@@ -18,10 +18,13 @@ def getBasePath():
     return PYTERA_PATH+'/static/downloads'
 
 def getBaseFileName(name):
-    return PYTERA_PATH+'/static/downloads/chr'+str(name)+'.vcf.gz'
+    return PYTERA_PATH+'/static/downloads/1000GP/chr'+str(name)+'.vcf.gz'
 
 def getFilePath(filename):
     return PYTERA_PATH+'/static/downloads/documents/'+str(filename)
+
+def getEspPath(filename):
+    return PYTERA_PATH+'/static/downloads/ESP/ESP.chr'+str(filename)+'.vcf.gz'
 
 
 def save_binary(filename, user_profile):
