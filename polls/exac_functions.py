@@ -13,7 +13,6 @@ from .dictionaries import exac_col_dic
 PYTERA_PATH = '/usr/local/share/applications/pytera'
     
 
-
 def exac_xlsx_file(chromo, start, stop, named_file, user_profile, columns):
     baseName=getFilePath(named_file)
     basePath=getBasePath()
