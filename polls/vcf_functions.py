@@ -26,6 +26,9 @@ def getFilePath(filename):
 def getEspPath(filename):
     return PYTERA_PATH+'/static/downloads/ESP/ESP.chr'+str(filename)+'.vcf.gz'
 
+def getExacPath():
+    return PYTERA_PATH+'/static/downloads/ExAC/ExAC.sites.vcf.gz'
+
 
 def save_binary(filename, user_profile):
     basePath=getBasePath()

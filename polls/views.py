@@ -240,7 +240,7 @@ def file_frmt_view_up(request):
                 elif format_evs=="xlsx":
                     return evs_xlsx_file(str(chromo), int(start), int(stop), user_profile, list(esp_columns))
                 elif format_exac=='xlsx':
-                    return exac_xlsx_file(str(chromo), int(start), int(stop), doc_name, user_profile, list(exac_cols))
+                    return exac_xlsx_file(str(chromo), int(start), int(stop), user_profile, list(exac_cols))
                     
                 return redirect('/documents/')
                 #return HttpResponse(str(samples))

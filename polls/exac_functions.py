@@ -3,7 +3,7 @@ from django.http import HttpResponse
 from django.core.files import File
 import xlsxwriter
 import os
-from .vcf_functions import getBasePath, save_binary, getFilePath, parse_fasta
+from .vcf_functions import getBasePath, save_binary, getFilePath, parse_fasta, getExacPath
 import subprocess
 import collections
 from .dictionaries import exac_col_dic
@@ -13,14 +13,11 @@ from .dictionaries import exac_col_dic
 PYTERA_PATH = '/usr/local/share/applications/pytera'
     
 
-def exac_xlsx_file(chromo, start, stop, named_file, user_profile, columns):
-    baseName=getFilePath(named_file)
+def exac_xlsx_file(chromo, start, stop, user_profile, columns):
     basePath=getBasePath()
+    exac_file = getExacPath()
     
-    ##### add all ESP files provided### change subprocess ### change path
-    subprocess.call(PYTERA_PATH+"/static/tabix-0.2.6/bgzip -c -f "+baseName+' > '+baseName+'.gz', shell=True)
-    subprocess.call(PYTERA_PATH+"/static/tabix-0.2.6/tabix -f -p vcf "+baseName+".gz", shell=True)
-    subprocess.call(PYTERA_PATH+"/static/tabix-0.2.6/tabix -f -p vcf -h "+baseName+".gz"+" "+str(chromo)+":"+str(start)+"-"+str(stop)+" > "+PYTERA_PATH+"/static/downloads/subset.vcf", shell=True)
+    subprocess.call(PYTERA_PATH+"/static/tabix-0.2.6/tabix -f -p vcf -h "+exac_file+" "+str(chromo)+":"+str(start)+"-"+str(stop)+" > "+PYTERA_PATH+"/static/downloads/subset.vcf", shell=True)
     
     vcf_reader = vcf.Reader(filename=PYTERA_PATH+"/static/downloads/subset.vcf")
     
@@ -166,8 +163,6 @@ def exac_xlsx_file(chromo, start, stop, named_file, user_profile, columns):
     save_binary(file, user_profile)
     os.remove(basePath+'/excel_exac-'+str(chromo)+'-'+str(start)+'-'+str(stop)+'.xlsx')
     os.remove(basePath+"/subset.vcf")
-    os.remove(baseName+".gz")
-    os.remove(baseName+".gz.tbi")
     
     path = basePath+'/documents/excel_exac-'+str(chromo)+'-'+str(start)+'-'+str(stop)+'.xlsx'
     with open(path, "rb") as excel:
