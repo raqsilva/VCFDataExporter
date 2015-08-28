@@ -3,7 +3,7 @@ from django.http import HttpResponse
 from django.core.files import File
 import xlsxwriter
 import os
-from .vcf_functions import getBasePath, save_binary, getFilePath, save_pdf, parse_fasta
+from .vcf_functions import getBasePath, save_binary, getFilePath, parse_fasta
 import subprocess
 import collections
 
@@ -131,7 +131,7 @@ def plot_stats(chromo, start, stop, named_file, user_profile):
     
     subprocess.call('tar -cvf'+basePath+'/plots/'+'plots.tar -C '+basePath+'/'+files_path, shell=True)
     subprocess.call(PYTERA_PATH+"/static/tabix-0.2.6/bgzip -f "+basePath+'/plots/'+'plots.tar', shell=True)
-    save_pdf('plots/plots.tar.gz', user_profile)
+    save_binary('plots/plots.tar.gz', user_profile)
  
     for file_name in os.listdir(PYTERA_PATH+"/static/downloads/plots"):
         os.remove(PYTERA_PATH+"/static/downloads/plots/"+file_name)

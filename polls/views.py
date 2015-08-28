@@ -5,13 +5,15 @@ from .vcf_functions import *
 from .upload_vcf_functions import *
 from .evs_vcf_functions import *
 from .exac_functions import *
-from .models import Document, UserProfile, Plot
+from .models import Document, UserProfile, Vcf
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ValidationError
 import os
 from django.utils.datastructures import MultiValueDictKeyError
 import mimetypes
 from django.contrib import messages
+import subprocess
+
 
 #PYTERA_PATH = str(os.getenv('PYTERA_PATH'))
 PYTERA_PATH = '/usr/local/share/applications/pytera'
@@ -70,10 +72,10 @@ def info(request):
 def result(request):
     if request.user.is_authenticated():
         documents = Document.objects.filter(user_profile=request.user.userprofile).all()
-        plots = Plot.objects.filter(user_profile=request.user.userprofile).all()
+        vcf_files = Vcf.objects.filter(user_profile=request.user.userprofile).all()
     else:
         return redirect('/authentication/')
-    return render(request, 'polls/result.html', {'documents': documents, 'plots':plots})
+    return render(request, 'polls/result.html', {'documents': documents, 'vcf_files':vcf_files})
 
 
 
@@ -140,7 +142,7 @@ def upload_view(request):
 def file_frmt_view_up(request):
     if request.user.is_authenticated():
         documents = Document.objects.filter(user_profile=request.user.userprofile).all()
-        plots = Plot.objects.filter(user_profile=request.user.userprofile).all()
+        vcf_files = Vcf.objects.filter(user_profile=request.user.userprofile).all()
         
         if request.method == 'POST':
             form = information(request.POST)
@@ -176,7 +178,7 @@ def file_frmt_view_up(request):
                 exac_cols = exac_excel_columns.cleaned_data.get('exac_col')
                 format_exac = exac_form.cleaned_data.get('exac_form')
                 
-                #return HttpResponse(str(esp_columns))
+                #return HttpResponse(str(populations))
                 
                 #return HttpResponse(str(request.FILES['docfile'].content_type)) #application/x-gzip text/directory
                 
@@ -186,23 +188,33 @@ def file_frmt_view_up(request):
                     if resp == 1:
                         messages.add_message(request, messages.ERROR, 'The uploaded file is not a VCF or Gizipped file, please provide a new file')
                         documents = Document.objects.filter(user_profile=request.user.userprofile).all()
-                        plots = Plot.objects.filter(user_profile=request.user.userprofile).all()
-                        return render(request, 'polls/tool.html', {'form':form, 'picker':picker, 'region':region, 'frmt':frmt,
-                                                                   'form_up':form_up, 'upload_file':upload_file, 'upload_name':upload_name,
-                                                                   'documents': documents, 'sample_up':sample_up, 'plots':plots, 'evs':evs, 'evs_form':evs_form, 'esp_columns':esp_excel_columns}) 
+                        vcf_files = Vcf.objects.filter(user_profile=request.user.userprofile).all()
+                        return render(request, 'polls/tool.html', {'form':form, 'picker':picker, 'region':region, 'frmt':frmt, 'form_up':form_up,
+                                                                    'upload_file':upload_file, 'upload_name':upload_name, 'sample_up':sample_up,
+                                                                    'documents': documents, 'vcf_files':vcf_files, 'evs_form':evs_form, 'maf':maf, 'esp_columns':esp_excel_columns,
+                                                                     'exac_cols':exac_excel_columns, 'exac_form':exac_form}) 
                     elif resp==2:
                         messages.add_message(request, messages.ERROR, 'The uploaded file is not a VCF file format, please provide a new file')
                         documents = Document.objects.filter(user_profile=request.user.userprofile).all()
-                        plots = Plot.objects.filter(user_profile=request.user.userprofile).all()
-                        return render(request, 'polls/tool.html', {'form':form, 'picker':picker, 'region':region, 'frmt':frmt,
-                                                                   'form_up':form_up, 'upload_file':upload_file, 'upload_name':upload_name,
-                                                                   'documents': documents,'sample_up':sample_up, 'plots':plots, 'evs':evs, 'evs_form':evs_form, 'esp_columns':esp_excel_columns}) 
+                        vcf_files = Vcf.objects.filter(user_profile=request.user.userprofile).all()
+                        return render(request, 'polls/tool.html',{'form':form, 'picker':picker, 'region':region, 'frmt':frmt, 'form_up':form_up,
+                                                                'upload_file':upload_file, 'upload_name':upload_name, 'sample_up':sample_up,
+                                                                'documents': documents, 'vcf_files':vcf_files, 'evs_form':evs_form, 'maf':maf, 'esp_columns':esp_excel_columns,
+                                                                'exac_cols':exac_excel_columns, 'exac_form':exac_form}) 
                     else:
                         pass
-                    newdoc = Document(docfile = request.FILES['docfile'], user_profile = user_profile)
+                    newdoc = Vcf(vcf_file = request.FILES['docfile'], user_profile = user_profile)
                     doc = request.FILES['docfile']
                     doc_name = str(doc.name)
                     newdoc.save()
+                    vcf_uploaded = PYTERA_PATH + '/static/downloads/documents/'+ doc_name
+                    mes = subprocess.call(PYTERA_PATH+'/static/vcftools_0.1.12b/bin/vcf-validator ' + vcf_uploaded, shell=True, env={'PERL5LIB': PYTERA_PATH+'/static/vcftools_0.1.12b/perl'})
+                    messages.add_message(request, messages.ERROR, mes)
+                    return render(request, 'polls/tool.html', {'form':form, 'picker':picker, 'region':region, 'frmt':frmt, 'form_up':form_up,
+                                                                'upload_file':upload_file, 'upload_name':upload_name, 'sample_up':sample_up,
+                                                                'documents': documents, 'vcf_files':vcf_files, 'evs_form':evs_form, 'maf':maf, 'esp_columns':esp_excel_columns,
+                                                                'exac_cols':exac_excel_columns, 'exac_form':exac_form}) 
+                    
                 except MultiValueDictKeyError:
                     pass
                 
@@ -217,13 +229,13 @@ def file_frmt_view_up(request):
                     pass
                 
                 if file_format=="ped":
-                    ped_file(str(chromo), int(start), int(stop), list(samples), user_profile)
+                    return ped_file(str(chromo), int(start), int(stop), list(samples), user_profile)
                 elif file_format=="rdf":
-                    rdf_file_multi_allelic(str(chromo), int(start), int(stop), list(samples), user_profile)
+                    return rdf_file_multi_allelic(str(chromo), int(start), int(stop), list(samples), user_profile)
                 elif file_format=="nexus":
-                    nexus_file(str(chromo), int(start), int(stop), list(populations), list(samples), user_profile)
+                    return nexus_file(str(chromo), int(start), int(stop), list(populations), list(samples), user_profile)
                 elif file_format=="fasta":
-                    fasta_file(str(chromo), int(start), int(stop), list(samples), user_profile)
+                    return fasta_file(str(chromo), int(start), int(stop), list(samples), user_profile)
                 elif format_form=="xlsx":
                     return xlsx_file(str(chromo), int(start), int(stop), doc_name, user_profile)
                 elif format_form=="stats":
@@ -259,7 +271,7 @@ def file_frmt_view_up(request):
         return redirect('/authentication/')
     return render(request, 'polls/tool.html', {'form':form, 'picker':picker, 'region':region, 'frmt':frmt, 'form_up':form_up,
                                                'upload_file':upload_file, 'upload_name':upload_name, 'sample_up':sample_up,
-                                               'documents': documents, 'plots':plots, 'evs_form':evs_form, 'maf':maf, 'esp_columns':esp_excel_columns,
+                                               'documents': documents, 'vcf_files':vcf_files, 'evs_form':evs_form, 'maf':maf, 'esp_columns':esp_excel_columns,
                                                'exac_cols':exac_excel_columns, 'exac_form':exac_form}) 
 
 

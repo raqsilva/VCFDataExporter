@@ -46,9 +46,9 @@
 				  {{ frmt }}
 <br>
 <br>
+<br>
 <div><h4><i><b>4- </b>Pick your populations</i></h4></div><br> 
 <div class="box_picker">	
-<label for="id_populations_0">Populations:</label><ul id="id_populations">
 <li>European Ancestry (EUR)<ul id="id_populations_0">
 <li><label for="id_populations_0_0"><input class="checkbox1" id="id_populations_0_0" name="populations" value="GBR" type="checkbox"> GBR</label></li>
 <li><label for="id_populations_0_1"><input class="checkbox1" id="id_populations_0_1" name="populations" value="FIN" type="checkbox"> FIN</label></li>
@@ -123,7 +123,7 @@
 </div>
 
 <div id='select_xlsx' hidden=True>
-<div><h4><i><b>4- </b>Choose the columns you want to add in the excel file</i></h4></div><br> 
+<div><h4><i><b>4- </b>Choose the columns you want to add in the excel file</i></h4></div>
 
 						{% include "polls/cols_esp_template.html" %}
 
@@ -165,7 +165,7 @@
 </div>
 
 <div class='box_docs'>
-		<div><h5><i>Documents Uploaded and Created</i></h5></div>
+		<div><h5><i>Documents Created</i></h5></div>
 		{% if documents %}
 	<ul>
 		{% for document in documents %}
@@ -176,11 +176,11 @@
 		<p>No documents.</p>
 	{% endif %}
 	<br>
-		<div><h5><i>Plots Created</i></h5></div>
-		{% if plots %}
+		<div><h5><i>Uploaded VCF's</i></h5></div>
+		{% if vcf_files %}
 	<ul>
-		{% for plot in plots %}
-		<li><a href="{{ plot.pdf.url }}" download>{{ plot.pdf.name }}</a></li>
+		{% for vcf in vcf_files %}
+		<li><a href="{{ vcf.vcf_file.url }}" download>{{ vcf.vcf_file.name }}</a></li>
 		{% endfor %}
 	</ul>
 	{% else %}

@@ -6,7 +6,7 @@ import collections
 from .dictionaries import ftp_dic, pop_sex, pop_samples
 from django.http import HttpResponse
 from Bio import SeqIO
-from .models import Document, Plot
+from .models import Document, Vcf
 from django.core.files import File
 import subprocess
 
@@ -34,11 +34,11 @@ def save_binary(filename, user_profile):
     file.close()
 
 
-def save_pdf(filename, user_profile):
+def save_vcf(filename, user_profile):
     basePath=getBasePath()
     file=open(basePath+"/"+filename,"rb")
     django_file_1 = File(file)
-    doc = Plot(pdf = django_file_1, user_profile = user_profile)
+    doc = Vcf(pdf = django_file_1, user_profile = user_profile)
     doc.save()
     django_file_1.close()
     file.close()
@@ -127,12 +127,23 @@ def ped_file(chromossome, start, stop, list_samples, user_profile):
     file1 = "PED-"+str(chromossome)+"-"+str(start)+"-"+str(stop)+".ped"
     file2 = "INFO-"+str(chromossome)+"-"+str(start)+"-"+str(stop)+".info"
     file3 = "MAP-"+str(chromossome)+"-"+str(start)+"-"+str(stop)+".map"
-    save(file1, user_profile)
-    save(file2, user_profile)
-    save(file3, user_profile)
+    files_path = str(' '+file1) + str(' '+file2) + str(' '+file3)
+
+    subprocess.call('tar -cvf'+basePath+'/plots/'+'ped_files.tar -C '+basePath+'/'+files_path, shell=True)
+    subprocess.call(PYTERA_PATH+"/static/tabix-0.2.6/bgzip -f "+basePath+'/plots/'+'ped_files.tar', shell=True)
+    save_binary('plots/ped_files.tar.gz', user_profile)
+    
+    os.remove(basePath+'/plots/'+'ped_files.tar.gz')
     os.remove(basePath+"/PED-"+str(chromossome)+"-"+str(start)+"-"+str(stop)+".ped")
     os.remove(basePath+"/INFO-"+str(chromossome)+"-"+str(start)+"-"+str(stop)+".info")
     os.remove(basePath+"/MAP-"+str(chromossome)+"-"+str(start)+"-"+str(stop)+".map")
+    
+    path = PYTERA_PATH+'/static/downloads/documents/ped_files.tar.gz'
+    with open(path, "rb") as zip_ped:
+        data = zip_ped.read()
+    response = HttpResponse( data, content_type='application/x-gzip')
+    response['Content-Disposition'] = 'attachment; filename=' + 'ped_files.tar.gz'
+    return response
     
 
 
@@ -244,11 +255,20 @@ def rdf_file_multi_allelic(chromossome, start, stop, list_samples, user_profile)
     file_snp.close()
     file1 = "RDF-"+str(chromossome)+"-"+str(start)+"-"+str(stop)+".rdf"
     file2 = "snp-ID-"+str(chromossome)+"-"+str(start)+"-"+str(stop)+".txt"
-    save(file1, user_profile)
-    save(file2, user_profile)
+    files_path = str(' '+file1) + str(' '+file2)
+    subprocess.call('tar -cvf'+basePath+'/plots/'+'rdf_files.tar -C '+basePath+'/'+files_path, shell=True)
+    subprocess.call(PYTERA_PATH+"/static/tabix-0.2.6/bgzip -f "+basePath+'/plots/'+'rdf_files.tar', shell=True)
+    save_binary('plots/rdf_files.tar.gz', user_profile)
+    os.remove(basePath+'/plots/'+'rdf_files.tar.gz')
     os.remove(basePath+"/RDF-"+str(chromossome)+"-"+str(start)+"-"+str(stop)+".rdf")
     os.remove(basePath+"/snp-ID-"+str(chromossome)+"-"+str(start)+"-"+str(stop)+".txt")
-
+    
+    path = PYTERA_PATH+'/static/downloads/documents/rdf_files.tar.gz'
+    with open(path, "rb") as zip_ped:
+        data = zip_ped.read()
+    response = HttpResponse( data, content_type='application/x-gzip')
+    response['Content-Disposition'] = 'attachment; filename=' + 'rdf_files.tar.gz'
+    return response
 
 
 def nexus_teste(chromossome, start, stop, list_samples):
@@ -328,9 +348,15 @@ def nexus_file(chromossome, start, stop, list_populations, list_samples, user_pr
     file.write("end;")
     file.close()
     file1 = "NEXUS-"+str(chromossome)+"-"+str(start)+"-"+str(stop)+".nex"
-    save(file1, user_profile)
+    save_binary(file1, user_profile)
     os.remove(basePath+"/NEXUS-"+str(chromossome)+"-"+str(start)+"-"+str(stop)+".nex")
-
+    path = PYTERA_PATH+'/static/downloads/documents/NEXUS-'+str(chromossome)+"-"+str(start)+"-"+str(stop)+".nex"
+    with open(path, "rb") as nex_file:
+        data = nex_file.read()
+    response = HttpResponse( data, content_type='text/plain')
+    response['Content-Disposition'] = 'attachment; filename=' + "NEXUS-"+str(chromossome)+"-"+str(start)+"-"+str(stop)+".nex"
+    return response
+    
 
 
 
@@ -397,11 +423,16 @@ def fasta_file(chromossome, start, stop, list_samples, user_profile):
         file.write(str(reg_b)+"\n")
     file.close()
     file1 = "FASTA-"+str(chromossome)+"-"+str(start)+"-"+str(stop)+".fasta"
-    save(file1, user_profile)
+    save_binary(file1, user_profile)
     os.remove(basePath+"/FASTA-"+str(chromossome)+"-"+str(start)+"-"+str(stop)+".fasta")
     os.remove(PYTERA_PATH+"/static/downloads/subset.vcf")
     
-    
+    path = PYTERA_PATH+'/static/downloads/documents/FASTA-'+str(chromossome)+"-"+str(start)+"-"+str(stop)+".fasta"
+    with open(path, "rb") as fa:
+        data = fa.read()
+    response = HttpResponse( data, content_type='text/plain')
+    response['Content-Disposition'] = 'attachment; filename=' + "FASTA-"+str(chromossome)+"-"+str(start)+"-"+str(stop)+".fasta"
+    return response
 
 
 

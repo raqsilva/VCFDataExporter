@@ -2,7 +2,7 @@
 
 {% block content %}
 <div class="web-app">
-    <div><h4><i>Documents Uploaded and Created</i></h4></div>
+    <div><h4><i>Documents Created</i></h4></div>
 	{% if documents %}
 	<ul>
 		{% for document in documents %}
@@ -19,11 +19,11 @@
 <br>
 </div>
 <div class="web-app">
-    <div><h4><i>Plots Created</i></h4></div>
-	{% if plots %}
+    <div><h4><i>Uploaded VCF's</i></h4></div>
+	{% if vcf_files %}
 	<ul>
-		{% for plot in plots %}
-		<li><a href="{{ plot.pdf.url }}" download>{{ plot.pdf.name }}</a></li>
+		{% for vcf in vcf_files %}
+		<li><a href="{{ vcf.vcf_file.url }}" download>{{ vcf.vcf_file.name }}</a></li>
 		{% endfor %}
 	</ul>
 	{% else %}

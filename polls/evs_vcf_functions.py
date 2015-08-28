@@ -3,7 +3,7 @@ from django.http import HttpResponse
 from django.core.files import File
 import xlsxwriter
 import os
-from .vcf_functions import getBasePath, save_binary, getFilePath, save_pdf, parse_fasta
+from .vcf_functions import getBasePath, save_binary, getFilePath, parse_fasta
 import subprocess
 import collections
 from .dictionaries import esp_col_dic

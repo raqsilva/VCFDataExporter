@@ -67,7 +67,7 @@ def register_user(request):
             # Send email with activation key
             email_subject = 'Account confirmation'
             email_body = "Hey %s, thanks for signing up. To activate your account, click this link within \
-            7 days https://localhost/confirm/%s" % (username, activation_key)
+            7 days http://127.0.0.1:8000/confirm/%s" % (username, activation_key) #### https://localhost/
 
             send_mail(email_subject, email_body, None,
                 [email], fail_silently=False)
