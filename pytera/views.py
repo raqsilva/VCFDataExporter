@@ -9,6 +9,8 @@ from django.core.mail import send_mail
 import hashlib, datetime, random
 from django.utils import timezone
 from django.contrib.auth.views import password_reset, password_reset_confirm
+from django.db import IntegrityError
+from django.contrib import messages
 
 
 
@@ -23,9 +25,20 @@ def auth_view(request):
     username = request.POST.get('username', '')
     password = request.POST.get('password', '')
     user = auth.authenticate(username=username, password=password)
+    try:
+        u = User.objects.get(username=username)
+    except User.DoesNotExist:
+        messages.add_message(request, messages.ERROR, 'The username does not exist, please try again.')
+        return render(request, 'polls/login.html')
     if user is not None:
         if user.is_active:
             auth.login(request, user)
+            try:
+                new_profile = UserProfile(user=user, activation_key='', 
+                            key_expires=timezone.now())
+                new_profile.save()
+            except IntegrityError:
+                pass
             return redirect('/')
         else:
             return HttpResponse('user not active')
