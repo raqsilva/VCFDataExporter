@@ -95,6 +95,7 @@ ROOT_URLCONF = 'pytera.urls'
 WSGI_APPLICATION = 'pytera.wsgi.application'
 
 
+
 # Database
 # https://docs.djangoproject.com/en/1.7/ref/settings/#databases
 
