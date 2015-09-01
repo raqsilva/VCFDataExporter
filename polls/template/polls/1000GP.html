@@ -21,28 +21,13 @@
 					<b><a href="{% url 'polls.views.GP_view' %}" >1000 Genomes Project</a></b>&nbsp; &nbsp; &nbsp; &nbsp;
 					<b><a href="{% url 'polls.views.esp_view' %}" >Exome Sequencing Project</a></b>&nbsp; &nbsp; &nbsp; &nbsp;
 					<b><a href="{% url 'polls.views.exac_view' %}" >ExAC</a></b>&nbsp; &nbsp; &nbsp; &nbsp;
-					<b><a href="javascript:showonlyone('newboxes4');" >Upload your VCF file</a></b>
+					<b><a href="{% url 'polls.views.upload_view' %}" >Upload your VCF file</a></b>
 						<br><br>
 				<div><h4><i><b>2- </b>Choose the chromosome and region to handle</i></h4></div><br>
 				  {{ form.as_p }}
 				  <br>
 				  {{ region.as_p }}
-				  
-		<div class="newboxes" id="newboxes3" style="display: none">
-				<br>
-				<div><h4><i><b>3- </b>Type of file format you want to export</i></h4></div><br>
-								{{ exac_form }}
-								<br>
-								<br> 
-				<div><h4><i><b>4- </b>Choose the columns you want to add in the excel file</i></h4></div><br>
-				<div class="choose_col">	
-								{% include "polls/cols_exac_template.html" %}
-				</div>
-				<h5><i><b>Note: </b>Chrom, POS, ID, Type, REF and ALT are standard columns</i></h5>
-				
-		</div>	  
-  
-		<div class="newboxes" id="newboxes1" style="display: block">
+                  
 				<div><h5><i><b>Note: </b>It's being used the GRCh37 Assembly</i></h5></div><br>
 				<div><h4><i><b>3- </b>Type of file format you want to export</i></h4></div><br> 
 				  {{ frmt }}
@@ -100,66 +85,7 @@
 </ul>
 </div>
 <br>
-</div>
-<div class="newboxes" id="newboxes2" style="display: none">
-				<div><h5><i><b>Note: </b>It's being used the GRCh37 Assembly</i></h5></div><br>
-				<div><h4><i><b>3- </b>Type of file format you want to export</i></h4></div><br> 
-	
-<select id="id_esp_format" name="esp_format" onchange="SelectHandler(this)">
-    <option selected="selected" value=""></option>
-    <option value="xlsx">
-        Excel(.xlsx)
-    </option>
-    <option value="vcf">
-        VCF
-    </option>
-</select>
 
-<br>
-<br>
-<div id='select_vcf' hidden=True>
-		
-				<div><h4><i><b>4- </b>Filter VCF file by Minor Allele Frequency (MAF) in percent, choose the parameters</i></h4></div><br> 
-						{{ maf.as_p }}
-						
-</div>
-
-<div id='select_xlsx' hidden=True>
-<div><h4><i><b>4- </b>Choose the columns you want to add in the excel file</i></h4></div>
-
-						{% include "polls/cols_esp_template.html" %}
-
-</div>
-</div>
-
-<div class="newboxes" id="newboxes4" style="display: none">
-		<br>
-		<div><h4><i><b>3- </b>Choose to upload a file or if it is already uploaded provide the file name with extension</i></h4></div><br>
-		<b><a href="javascript:showonlyone2('boxes2');" >Upload File</a></b>&nbsp; &nbsp; &nbsp; &nbsp;
-	   <b><a href="javascript:showonlyone2('boxes1');" >Provide file name</a></b>&nbsp; &nbsp; &nbsp; &nbsp;
-					<br>
-					<div class="boxes" id="boxes1" style="display: none">
-					<br>
-					{{ upload_name }}
-					<div><h5><i><b>Ex: </b>filename.vcf.gz</i></h5></div>
-					</div>
-					<br>
-					<div class="boxes" id="boxes2" style="display: none">
-					<p>{{ upload_file.non_field_errors }}</p>
-					<p>{{ upload_file.docfile.label_tag }} {{ upload_file.docfile.help_text }}</p>
-					<p>
-						{{ upload_file.docfile.errors }}
-						{{ upload_file.docfile }}
-					</p>
-				<br>
-				</div>
-					<div><h4><i><b>4- </b>Choose samples</i></h4></div><br>
-					{{ sample_up }}
-				<div><h5><i><b>Note: </b>Provide comma separated sample(s) or leave blank if all</i></h5></div>
-		<br> <div><h4><i><b>5- </b>Type of file format you want to export</i></h4></div><br> 
-			<p>{{ form_up }}</p>
-			<div><h5><i><b>Note: </b>Excel file limits are 1,048,576 rows by 16,384 columns</i></h5></div><br>
-</div><br>
 
 		  <div class='box_input'><input type="submit" /></div>
 		  <br><br>
@@ -192,9 +118,4 @@
 </div>
 
 
-
-
-<!--
-<p class='button_pos'><a href="/accounts/logout/" class="btn btn-primary" role="button"><span class="glyphicon glyphicon-off" aria-hidden="true"></span> Logout </a></p>
--->
 {% endblock %}

@@ -30,45 +30,6 @@ def authentication(request):
 
 
 #@login_required
-def info(request):
-    if request.method == 'POST':
-        form = information(request.POST)
-        picker = fetch_info(request.POST)
-        region = region_form(request.POST)
-        frmt = file_format_form(request.POST)
-        if form.is_valid() and picker.is_valid() and region.is_valid() and frmt.is_valid() :
-            chromo = form.cleaned_data.get('chromosome')
-            populations = picker.cleaned_data.get('populations')
-            start = region.cleaned_data.get('start')
-            stop = region.cleaned_data.get('stop')
-            file_format = frmt.cleaned_data.get('file_format')
-            
-            if list(populations)[0]!="all":
-                samples=MySamples(list(populations))
-            else:
-                samples=list(populations)
-                
-            if file_format=="ped":
-                ped_file(str(chromo), int(start), int(stop), list(samples))
-            elif file_format=="rdf":
-                rdf_file_multi_allelic(str(chromo), int(start), int(stop), list(samples))
-            elif file_format=="nexus":
-                nexus_file(str(chromo), int(start), int(stop), list(populations), list(samples))
-            elif file_format=="fasta":
-                fasta_file(str(chromo), int(start), int(stop), list(samples))
-            
-            #return HttpResponse('Check Download Folder')
-            return redirect('/result/')
-            #return HttpResponse(str(samples))
-    else:
-        form = information()
-        picker = fetch_info()
-        region = region_form()
-        frmt = file_format_form()
-    return render(request, 'polls/info.html', {'form':form, 'picker':picker, 'region':region, 'frmt':frmt})
-
-
-#@login_required
 def result(request):
     if request.user.is_authenticated():
         documents = Document.objects.filter(user_profile=request.user.userprofile).all()
@@ -95,10 +56,6 @@ def validate_file(f):
     filename = f.name
     mime = f.content_type #application/x-gzip text/directory
     allowed_mimes = ['application/x-gzip', 'text/directory', 'text/x-vcard']
-    # if filename.endswith('.vcf') or filename.endswith('.gz'):
-    #     pass
-    # else:
-    #     raise ValidationError("File is not a VCF or gzipped VCF file. Please try again")
     with open(PYTERA_PATH+'/static/downloads/name.vcf', 'wb+') as destination:
         n = 0
         for chunk in f.chunks(chunk_size=4000):
@@ -125,21 +82,93 @@ def validate_file(f):
     os.remove(PYTERA_PATH+"/static/downloads/name.vcf")
         
 
-    
-def upload_view(request):
-    if request.method == 'POST':
-        upload_file = ProfileForm(request.POST, request.FILES)
-        if upload_file.is_valid():
-            newdoc = Document(docfile = request.FILES['docfile'], user_profile = request.user.userprofile)
-            newdoc.save()
+
+
+def exac_view(request):
+    if request.user.is_authenticated():
+        documents = Document.objects.filter(user_profile=request.user.userprofile).all()
+        vcf_files = Vcf.objects.filter(user_profile=request.user.userprofile).all()
+        
+        if request.method == 'POST':
+            form = information(request.POST)
+            region = region_form(request.POST)
+            exac_excel_columns = exac_columns(request.POST)
+            exac_form = exac_format(request.POST)
+            
+            if form.is_valid() and region.is_valid() and exac_excel_columns.is_valid() and exac_form.is_valid():
+                chromo = form.cleaned_data.get('chromosome')
+                start = region.cleaned_data.get('start')
+                stop = region.cleaned_data.get('stop')
+                exac_cols = exac_excel_columns.cleaned_data.get('exac_col')
+                format_exac = exac_form.cleaned_data.get('exac_form')
+                
+                user_profile = request.user.userprofile
+
+                if format_exac=='xlsx':
+                    return exac_xlsx_file(str(chromo), int(start), int(stop), user_profile, list(exac_cols))
+                
+                return redirect('/documents/')
+                
+        else:
+            form = information()
+            region = region_form()
+            exac_excel_columns = exac_columns()
+            exac_form = exac_format()
     else:
-        upload_file = ProfileForm(instance=request.user.userprofile)
-    documents = Document.objects.filter(user_profile=request.user.userprofile).all()
-    return render(request, 'polls/upload.html', {'upload_file':upload_file, 'documents': documents})
+        return redirect('/authentication/')
+    return render(request, 'polls/exac.html', {'form':form, 'region':region, 'documents': documents, 'vcf_files':vcf_files,
+                                               'exac_cols':exac_excel_columns, 'exac_form':exac_form}) 
+
+
+def esp_view(request):
+    if request.user.is_authenticated():
+        documents = Document.objects.filter(user_profile=request.user.userprofile).all()
+        vcf_files = Vcf.objects.filter(user_profile=request.user.userprofile).all()
+        
+        if request.method == 'POST':
+            form = information(request.POST)
+            region = region_form(request.POST)
+            evs_form = evs_format(request.POST)
+            maf = maf_form(request.POST)
+            esp_excel_columns = excel_columns(request.POST)
+            
+            if form.is_valid() and region.is_valid() and evs_form.is_valid() and maf.is_valid() and esp_excel_columns.is_valid():
+                chromo = form.cleaned_data.get('chromosome')
+                start = region.cleaned_data.get('start')
+                stop = region.cleaned_data.get('stop')
+                format_evs = evs_form.cleaned_data.get('esp_format')
+                ea = maf.cleaned_data.get('EA')
+                aa = maf.cleaned_data.get('AA')
+                total = maf.cleaned_data.get('All')
+                ea_sign = maf.cleaned_data.get('ea_char')
+                aa_sign = maf.cleaned_data.get('aa_char')
+                total_sign = maf.cleaned_data.get('all_char')
+                esp_columns = esp_excel_columns.cleaned_data.get('columns')
+
+                user_profile = request.user.userprofile
+                
+                if format_evs=="vcf":
+                    return filter_vcf(str(chromo), int(start), int(stop), user_profile, ea, aa, total, ea_sign, aa_sign, total_sign)
+                elif format_evs=="xlsx":
+                    return evs_xlsx_file(str(chromo), int(start), int(stop), user_profile, list(esp_columns))
+                    
+                return redirect('/documents/')
+                
+        else:
+            form = information()
+            region = region_form()
+            evs_form = evs_format()
+            maf = maf_form()
+            esp_excel_columns = excel_columns()
+            
+    else:
+        return redirect('/authentication/')
+    return render(request, 'polls/esp.html', {'form':form, 'region':region, 'documents': documents, 'vcf_files':vcf_files,
+                                               'evs_form':evs_form, 'maf':maf, 'esp_columns':esp_excel_columns,}) 
 
 
 
-def file_frmt_view_up(request):
+def GP_view(request):
     if request.user.is_authenticated():
         documents = Document.objects.filter(user_profile=request.user.userprofile).all()
         vcf_files = Vcf.objects.filter(user_profile=request.user.userprofile).all()
@@ -149,38 +178,65 @@ def file_frmt_view_up(request):
             picker = fetch_info(request.POST)
             region = region_form(request.POST)
             frmt = file_format_form(request.POST)
-            form_up = format_form_uploaded(request.POST)
-            upload_file = ProfileForm(request.POST, request.FILES)
-            upload_name = file_uploaded_form(request.POST)
-            sample_up = sample_form(request.POST)
-            evs_form = evs_format(request.POST)
-            maf = maf_form(request.POST)
-            esp_excel_columns = excel_columns(request.POST)
-            exac_excel_columns = exac_columns(request.POST)
-            exac_form = exac_format(request.POST)
             
-            if form.is_valid() and picker.is_valid() and region.is_valid() and frmt.is_valid() and form_up.is_valid() and upload_file.is_valid() and upload_name.is_valid() and sample_up.is_valid() and evs_form.is_valid() and maf.is_valid() and esp_excel_columns.is_valid() and exac_excel_columns.is_valid() and exac_form.is_valid():
+            if form.is_valid() and picker.is_valid() and region.is_valid() and frmt.is_valid():
                 chromo = form.cleaned_data.get('chromosome')
                 populations = picker.cleaned_data.get('populations')
                 start = region.cleaned_data.get('start')
                 stop = region.cleaned_data.get('stop')
                 file_format = frmt.cleaned_data.get('file_format')
+                
+                user_profile = request.user.userprofile
+                try:
+                    samples=MySamples(populations)
+                except IndexError:
+                    pass
+                
+                if file_format=="ped":
+                    return ped_file(str(chromo), int(start), int(stop), list(samples), user_profile)
+                elif file_format=="rdf":
+                    return rdf_file_multi_allelic(str(chromo), int(start), int(stop), list(samples), user_profile)
+                elif file_format=="nexus":
+                    return nexus_file(str(chromo), int(start), int(stop), list(populations), list(samples), user_profile)
+                elif file_format=="fasta":
+                    return fasta_file(str(chromo), int(start), int(stop), list(samples), user_profile)
+                    
+                return redirect('/documents/')
+                #return HttpResponse(str(samples))
+                
+        else:
+            form = information()
+            picker = fetch_info()
+            region = region_form()
+            frmt = file_format_form()
+            
+    else:
+        return redirect('/authentication/')
+    return render(request, 'polls/1000GP.html', {'form':form, 'picker':picker, 'region':region, 'frmt':frmt,
+                                               'documents': documents, 'vcf_files':vcf_files}) 
+
+
+
+
+def upload_view(request):
+    if request.user.is_authenticated():
+        documents = Document.objects.filter(user_profile=request.user.userprofile).all()
+        vcf_files = Vcf.objects.filter(user_profile=request.user.userprofile).all()
+        
+        if request.method == 'POST':
+            form = information(request.POST)
+            region = region_form(request.POST)
+            form_up = format_form_uploaded(request.POST)
+            upload_file = ProfileForm(request.POST, request.FILES)
+            upload_name = file_uploaded_form(request.POST)
+            sample_up = sample_form(request.POST)
+            
+            if form.is_valid() and region.is_valid() and form_up.is_valid() and upload_file.is_valid() and upload_name.is_valid() and sample_up.is_valid():
+                chromo = form.cleaned_data.get('chromosome')
+                start = region.cleaned_data.get('start')
+                stop = region.cleaned_data.get('stop')
                 format_form = form_up.cleaned_data.get('format_output')
                 spec_samples = sample_up.cleaned_data.get('samples')
-                format_evs = evs_form.cleaned_data.get('esp_format')
-                ea = maf.cleaned_data.get('EA')
-                aa = maf.cleaned_data.get('AA')
-                total = maf.cleaned_data.get('All')
-                ea_sign = maf.cleaned_data.get('ea_char')
-                aa_sign = maf.cleaned_data.get('aa_char')
-                total_sign = maf.cleaned_data.get('all_char')
-                esp_columns = esp_excel_columns.cleaned_data.get('columns')
-                exac_cols = exac_excel_columns.cleaned_data.get('exac_col')
-                format_exac = exac_form.cleaned_data.get('exac_form')
-                
-                #return HttpResponse(str(populations))
-                
-                #return HttpResponse(str(request.FILES['docfile'].content_type)) #application/x-gzip text/directory
                 
                 user_profile = request.user.userprofile
                 try:
@@ -189,18 +245,16 @@ def file_frmt_view_up(request):
                         messages.add_message(request, messages.ERROR, 'The uploaded file is not a VCF or Gizipped file, please provide a new file')
                         documents = Document.objects.filter(user_profile=request.user.userprofile).all()
                         vcf_files = Vcf.objects.filter(user_profile=request.user.userprofile).all()
-                        return render(request, 'polls/tool.html', {'form':form, 'picker':picker, 'region':region, 'frmt':frmt, 'form_up':form_up,
+                        return render(request, 'polls/upload.html', {'form':form, 'region':region, 'form_up':form_up,
                                                                     'upload_file':upload_file, 'upload_name':upload_name, 'sample_up':sample_up,
-                                                                    'documents': documents, 'vcf_files':vcf_files, 'evs_form':evs_form, 'maf':maf, 'esp_columns':esp_excel_columns,
-                                                                     'exac_cols':exac_excel_columns, 'exac_form':exac_form}) 
+                                                                    'documents': documents, 'vcf_files':vcf_files}) 
                     elif resp==2:
                         messages.add_message(request, messages.ERROR, 'The uploaded file is not a VCF file format, please provide a new file')
                         documents = Document.objects.filter(user_profile=request.user.userprofile).all()
                         vcf_files = Vcf.objects.filter(user_profile=request.user.userprofile).all()
-                        return render(request, 'polls/tool.html',{'form':form, 'picker':picker, 'region':region, 'frmt':frmt, 'form_up':form_up,
-                                                                'upload_file':upload_file, 'upload_name':upload_name, 'sample_up':sample_up,
-                                                                'documents': documents, 'vcf_files':vcf_files, 'evs_form':evs_form, 'maf':maf, 'esp_columns':esp_excel_columns,
-                                                                'exac_cols':exac_excel_columns, 'exac_form':exac_form}) 
+                        return render(request, 'polls/upload.html', {'form':form, 'region':region, 'form_up':form_up,
+                                                                    'upload_file':upload_file, 'upload_name':upload_name, 'sample_up':sample_up,
+                                                                    'documents': documents, 'vcf_files':vcf_files}) 
                     else:
                         pass
                     newdoc = Vcf(vcf_file = request.FILES['docfile'], user_profile = user_profile)
@@ -216,60 +270,25 @@ def file_frmt_view_up(request):
                 else:
                     pass
                 
-                try:
-                    samples=MySamples(populations)
-                except IndexError:
-                    pass
-                
-                if file_format=="ped":
-                    return ped_file(str(chromo), int(start), int(stop), list(samples), user_profile)
-                elif file_format=="rdf":
-                    return rdf_file_multi_allelic(str(chromo), int(start), int(stop), list(samples), user_profile)
-                elif file_format=="nexus":
-                    return nexus_file(str(chromo), int(start), int(stop), list(populations), list(samples), user_profile)
-                elif file_format=="fasta":
-                    return fasta_file(str(chromo), int(start), int(stop), list(samples), user_profile)
-                elif format_form=="xlsx":
+                if format_form=="xlsx":
                     return xlsx_file(str(chromo), int(start), int(stop), doc_name, user_profile)
                 elif format_form=="stats":
                     return plot_stats(str(chromo), int(start), int(stop), doc_name, user_profile)
                 elif format_form=="fasta_up":
                     return get_fasta(str(chromo), int(start), int(stop), doc_name, user_profile, spec_samples)
-                elif format_evs=="vcf":
-                    return filter_vcf(str(chromo), int(start), int(stop), user_profile, ea, aa, total, ea_sign, aa_sign, total_sign)
-                elif format_evs=="xlsx":
-                    return evs_xlsx_file(str(chromo), int(start), int(stop), user_profile, list(esp_columns))
-                elif format_exac=='xlsx':
-                    return exac_xlsx_file(str(chromo), int(start), int(stop), user_profile, list(exac_cols))
                     
                 return redirect('/documents/')
-                #return HttpResponse(str(samples))
                 
         else:
             form = information()
-            picker = fetch_info()
             region = region_form()
-            frmt = file_format_form()
             form_up = format_form_uploaded()
             upload_file = ProfileForm(instance=request.user.userprofile)
             upload_name = file_uploaded_form()
             sample_up = sample_form()
-            evs_form = evs_format()
-            maf = maf_form()
-            esp_excel_columns = excel_columns()
-            exac_excel_columns = exac_columns()
-            exac_form = exac_format()
             
     else:
         return redirect('/authentication/')
-    return render(request, 'polls/tool.html', {'form':form, 'picker':picker, 'region':region, 'frmt':frmt, 'form_up':form_up,
-                                               'upload_file':upload_file, 'upload_name':upload_name, 'sample_up':sample_up,
-                                               'documents': documents, 'vcf_files':vcf_files, 'evs_form':evs_form, 'maf':maf, 'esp_columns':esp_excel_columns,
-                                               'exac_cols':exac_excel_columns, 'exac_form':exac_form}) 
-
-
-
-
-
-
-
+    return render(request, 'polls/upload.html', {'form':form, 'region':region, 'form_up':form_up,
+                                                'upload_file':upload_file, 'upload_name':upload_name, 'sample_up':sample_up,
+                                                'documents': documents, 'vcf_files':vcf_files}) 

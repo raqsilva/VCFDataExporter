@@ -27,35 +27,36 @@
 				  {{ form.as_p }}
 				  <br>
 				  {{ region.as_p }}
-				  
-		<br>
-		<div><h4><i><b>3- </b>Choose to upload a file or if it is already uploaded provide the file name with extension</i></h4></div><br>
-		<b><a href="javascript:showonlyone2('boxes2');" >Upload File</a></b>&nbsp; &nbsp; &nbsp; &nbsp;
-	   <b><a href="javascript:showonlyone2('boxes1');" >Provide file name</a></b>&nbsp; &nbsp; &nbsp; &nbsp;
-					<br>
-					<div class="boxes" id="boxes1" style="display: none">
-					<br>
-					{{ upload_name }}
-					<div><h5><i><b>Ex: </b>filename.vcf.gz</i></h5></div>
-					</div>
-					<br>
-					<div class="boxes" id="boxes2" style="display: none">
-					<p>{{ upload_file.non_field_errors }}</p>
-					<p>{{ upload_file.docfile.label_tag }} {{ upload_file.docfile.help_text }}</p>
-					<p>
-						{{ upload_file.docfile.errors }}
-						{{ upload_file.docfile }}
-					</p>
-				<br>
-				</div>
-					<div><h4><i><b>4- </b>Choose samples</i></h4></div><br>
-					{{ sample_up }}
-				<div><h5><i><b>Note: </b>Provide comma separated sample(s) or leave blank if all</i></h5></div>
-		<br> <div><h4><i><b>5- </b>Type of file format you want to export</i></h4></div><br> 
-			<p>{{ form_up }}</p>
-			<div><h5><i><b>Note: </b>Excel file limits are 1,048,576 rows by 16,384 columns</i></h5></div><br>
-<br>
+                  
 
+				<div><h5><i><b>Note: </b>It's being used the GRCh37 Assembly</i></h5></div><br>
+				<div><h4><i><b>3- </b>Type of file format you want to export</i></h4></div><br> 
+	
+<select id="id_esp_format" name="esp_format" onchange="SelectHandler(this)">
+    <option selected="selected" value=""></option>
+    <option value="xlsx">
+        Excel(.xlsx)
+    </option>
+    <option value="vcf">
+        VCF
+    </option>
+</select>
+
+<br>
+<br>
+<div id='select_vcf' hidden=True>
+		
+				<div><h4><i><b>4- </b>Filter VCF file by Minor Allele Frequency (MAF) in percent, choose the parameters</i></h4></div><br> 
+						{{ maf.as_p }}
+						
+</div>
+
+<div id='select_xlsx' hidden=True>
+<div><h4><i><b>4- </b>Choose the columns you want to add in the excel file</i></h4></div>
+
+						{% include "polls/cols_esp_template.html" %}
+
+</div><br>
 		  <div class='box_input'><input type="submit" /></div>
 		  <br><br>
 		</form>
@@ -86,6 +87,5 @@
 	{% endif %}
 </div>
 
-		  
-
 {% endblock %}
+

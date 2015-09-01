@@ -48,6 +48,27 @@ class file_format_form(forms.Form):
         )
     file_format = forms.ChoiceField(choices=OPTIONS, required = False)
 
+
+class format_form_uploaded(forms.Form):
+    OPTIONS =(
+        ("",""),("stats","Stats"),("xlsx","Excel(.xlsx)"),("fasta_up", "FASTA"),
+        )
+    format_output = forms.ChoiceField(choices=OPTIONS, required = False)
+    
+
+class exac_format(forms.Form):
+    OPTIONS =(
+        ("",""), ("xlsx","Excel(.xlsx)"), ("vcf", "VCF"),
+        )
+    exac_form = forms.ChoiceField(label='Format', choices=OPTIONS, required = False)
+
+
+class evs_format(forms.Form):
+    OPTIONS =(
+        ("",""), ("xlsx","Excel(.xlsx)"), ("vcf", "VCF"),
+        )
+    esp_format = forms.ChoiceField(label='Format', choices=OPTIONS, required = False)
+
  
 
 class ProfileForm(forms.ModelForm):   
@@ -56,14 +77,6 @@ class ProfileForm(forms.ModelForm):
         fields = ['docfile']
         #exclude = ['activation_key', 'key_expires', 'user']
         
-    
-
-class format_form_uploaded(forms.Form):
-    OPTIONS =(
-        ("",""),("stats","Stats"),("xlsx","Excel(.xlsx)"),("fasta_up", "FASTA"),
-        )
-    format_output = forms.ChoiceField(choices=OPTIONS, required = False)
-    
 
 
 class file_uploaded_form(forms.Form):
@@ -74,12 +87,6 @@ class file_uploaded_form(forms.Form):
 class sample_form(forms.Form):
     samples = forms.CharField(label='Samples', max_length=200, required = False)  
 
-
-class evs_format(forms.Form):
-    OPTIONS =(
-        ("",""), ("xlsx","Excel(.xlsx)"), ("vcf", "VCF"),
-        )
-    esp_format = forms.ChoiceField(label='Format', choices=OPTIONS, required = False)
 
 
 class maf_form(forms.Form):# Minor Allele Frequency in percent
@@ -161,13 +168,6 @@ class exac_columns(forms.Form):
     )
     exac_col = forms.MultipleChoiceField(choices=CHOICES, widget=forms.CheckboxSelectMultiple(), required = False, label='Fields')
 
-
-
-class exac_format(forms.Form):
-    OPTIONS =(
-        ("",""), ("xlsx","Excel(.xlsx)"), ("vcf", "VCF"),
-        )
-    exac_form = forms.ChoiceField(label='Format', choices=OPTIONS, required = False)
 
 
 
