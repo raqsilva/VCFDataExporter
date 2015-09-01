@@ -8,6 +8,7 @@
 			{% if messages %}
 				{% for message in messages %}
 					<div class="alert alert-{{ message.tags }}">
+						<a class="close" href="#" data-dismiss="alert">&times;</a>
 						{{ message }}
 					</div>
 				{% endfor %}
@@ -160,7 +161,7 @@
 			<div><h5><i><b>Note: </b>Excel file limits are 1,048,576 rows by 16,384 columns</i></h5></div><br>
 </div><br>
 
-		  <div class='box_input'><input type="submit" id="sendbutton"/></div>
+		  <div class='box_input'><input type="submit" /></div>
 		  <br><br>
 		</form>
 </div>
@@ -194,52 +195,7 @@
 
 
 
-<script language="javascript"> 
-function showonlyone(thechosenone) {
-      var newboxes = document.getElementsByTagName("div");
-            for(var x=0; x<newboxes.length; x++) {
-                  name = newboxes[x].getAttribute("class");
-                  if (name == 'newboxes') {
-                        if (newboxes[x].id == thechosenone) {
-                        newboxes[x].style.display = 'block';
-                  }
-                  else {
-                        newboxes[x].style.display = 'none';
-                  }
-            }
-      }
-}
-</script>
 
-<script language="javascript"> 
-function showonlyone2(thechosenone) {
-      var boxes = document.getElementsByTagName("div");
-            for(var x=0; x<boxes.length; x++) {
-                  name = boxes[x].getAttribute("class");
-                  if (name == 'boxes') {
-                        if (boxes[x].id == thechosenone) {
-                        boxes[x].style.display = 'block';
-                  }
-                  else {
-                        boxes[x].style.display = 'none';
-                  }
-            }
-      }
-}
-</script>
-
-<script language="javascript"> 
-function SelectHandler(select){
-		if(select.value == 'xlsx'){
-				$("#select_xlsx").show()
-				$("#select_vcf").hide();
-								}
-		else if(select.value == 'vcf'){
-				$("#select_vcf").show();
-				$("#select_xlsx").hide();
-				}
-		}
-</script>
 
 
 

@@ -13,57 +13,8 @@
         <script src="//code.jquery.com/jquery-1.10.2.js"></script>
         <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
         <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script> <!-- message alert -->
+        <script type="text/javascript" src="{% static 'css/tool_js.js' %}"></script> 
         
-        <script> 
-        $(document).ready(function() {
-            $('#id_populations_5_0').click(function(event) {  //on click
-                if(this.checked) { // check select status
-                    $('.checkbox1').each(function() { //loop through each checkbox
-                        this.checked = true;  //select all checkboxes with class "checkbox1"              
-                    });
-                }else{
-                    $('.checkbox1').each(function() { //loop through each checkbox
-                        this.checked = false; //deselect all checkboxes with class "checkbox1"                      
-                    });        
-                }
-            });
-           
-        });
-        </script>
-        
-        <script> 
-        $(document).ready(function() {
-            $('#id_columns_12').click(function(event) {  //on click
-                if(this.checked) { // check select status
-                    $('.column1').each(function() { 
-                        this.checked = true;      
-                    });
-                }else{
-                    $('.column1').each(function() { 
-                        this.checked = false;                      
-                    });        
-                }
-            });
-           
-        });
-        </script>
-        
-        <script> 
-        $(document).ready(function() {
-            $('#id_exac_col_44').click(function(event) {  //on click
-                if(this.checked) { // check select status
-                    $('.add_all').each(function() { 
-                        this.checked = true;         
-                    });
-                }else{
-                    $('.add_all').each(function() { 
-                        this.checked = false;             
-                    });        
-                }
-            });
-           
-        });
-        </script>
 
     </head>
     <body >
