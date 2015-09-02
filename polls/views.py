@@ -3,8 +3,9 @@ from .forms import *
 from django.http import HttpResponse
 from .vcf_functions import *
 from .upload_vcf_functions import *
-from .evs_vcf_functions import *
 from .exac_functions import *
+from .esp_xlsx import evs_xlsx_file
+from .esp_vcf import filter_vcf
 from .models import Document, UserProfile, Vcf
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ValidationError
@@ -13,6 +14,7 @@ from django.utils.datastructures import MultiValueDictKeyError
 import mimetypes
 from django.contrib import messages
 import subprocess
+
 
 
 #PYTERA_PATH = str(os.getenv('PYTERA_PATH'))
@@ -120,6 +122,7 @@ def exac_view(request):
                                                'exac_cols':exac_excel_columns, 'exac_form':exac_form}) 
 
 
+
 def esp_view(request):
     if request.user.is_authenticated():
         documents = Document.objects.filter(user_profile=request.user.userprofile).all()
@@ -150,7 +153,7 @@ def esp_view(request):
                 if format_evs=="vcf":
                     return filter_vcf(str(chromo), int(start), int(stop), user_profile, ea, aa, total, ea_sign, aa_sign, total_sign)
                 elif format_evs=="xlsx":
-                    return evs_xlsx_file(str(chromo), int(start), int(stop), user_profile, list(esp_columns))
+                    return evs_xlsx_file(str(chromo), int(start), int(stop), user_profile, list(esp_columns), ea, aa, total, ea_sign, aa_sign, total_sign)
                     
                 return redirect('/documents/')
                 

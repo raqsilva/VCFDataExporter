@@ -72,17 +72,17 @@ def xlsx_file(chromo, start, stop, named_file, user_profile):
     workbook.close()
 
     file = 'excel_doc-'+str(chromo)+'-'+str(start)+'-'+str(stop)+'.xlsx'
-    save_binary(file, user_profile)
+    name = save_binary(file, user_profile)
     os.remove(basePath+'/excel_doc-'+str(chromo)+'-'+str(start)+'-'+str(stop)+'.xlsx')
     os.remove(PYTERA_PATH+"/static/downloads/subset.vcf")
     os.remove(baseName+".gz")
     os.remove(baseName+".gz.tbi")
     
-    path = PYTERA_PATH+'/static/downloads/documents/excel_doc-'+str(chromo)+'-'+str(start)+'-'+str(stop)+'.xlsx'
+    path = PYTERA_PATH+'/static/downloads/documents/' + name
     with open(path, "rb") as excel:
         data = excel.read()
     response = HttpResponse( data, content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
-    response['Content-Disposition'] = 'attachment; filename=' + 'excel_doc-'+str(start)+'-'+str(stop)+'.xlsx'
+    response['Content-Disposition'] = 'attachment; filename=' + name.split('/')[1]
     return response
         
     
@@ -131,7 +131,7 @@ def plot_stats(chromo, start, stop, named_file, user_profile):
     
     subprocess.call('tar -cvf'+basePath+'/plots/'+'plots.tar -C '+basePath+'/'+files_path, shell=True)
     subprocess.call(PYTERA_PATH+"/static/tabix-0.2.6/bgzip -f "+basePath+'/plots/'+'plots.tar', shell=True)
-    save_binary('plots/plots.tar.gz', user_profile)
+    name = save_binary('plots/plots.tar.gz', user_profile)
  
     for file_name in os.listdir(PYTERA_PATH+"/static/downloads/plots"):
         os.remove(PYTERA_PATH+"/static/downloads/plots/"+file_name)
@@ -139,11 +139,11 @@ def plot_stats(chromo, start, stop, named_file, user_profile):
     os.remove(baseName+".gz")
     os.remove(baseName+".gz.tbi")
     
-    path = PYTERA_PATH+'/static/downloads/documents/plots.tar.gz'
+    path = PYTERA_PATH+'/static/downloads/' + name
     with open(path, "rb") as zip_plots:
         data = zip_plots.read()
     response = HttpResponse( data, content_type='application/x-gzip')
-    response['Content-Disposition'] = 'attachment; filename=' + 'plots.tar.gz'
+    response['Content-Disposition'] = 'attachment; filename=' + name.split('/')[1]
     return response
     
     
@@ -206,17 +206,17 @@ def get_fasta(chromo, start, stop, named_file, user_profile, spec_samples):
         file.write(str(reg_b)+"\n")
     file.close()
     file1 = "FASTA-"+str(chromo)+"-"+str(start)+"-"+str(stop)+".fasta"
-    save_binary(file1, user_profile)
+    name = save_binary(file1, user_profile)
     os.remove(basePath+"/FASTA-"+str(chromo)+"-"+str(start)+"-"+str(stop)+".fasta")
     os.remove(PYTERA_PATH+"/static/downloads/subset.vcf")
     os.remove(baseName+".gz")
     os.remove(baseName+".gz.tbi")
     
-    path = PYTERA_PATH+'/static/downloads/documents/FASTA-'+str(chromo)+"-"+str(start)+"-"+str(stop)+".fasta"
+    path = PYTERA_PATH+'/static/downloads/'+name
     with open(path, "rb") as fa:
         data = fa.read()
     response = HttpResponse( data, content_type='text/plain')
-    response['Content-Disposition'] = 'attachment; filename=' + "FASTA-"+str(chromo)+"-"+str(start)+"-"+str(stop)+".fasta"
+    response['Content-Disposition'] = 'attachment; filename=' + name.split('/')[1]
     return response
     
 

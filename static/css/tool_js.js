@@ -36,8 +36,8 @@ function showonlyone2(thechosenone) {
 function SelectHandler(select){
 		if(select.value == 'xlsx'){
 				$("#select_xlsx").show()
-				$("#select_vcf").hide();
-								}
+				$("#select_vcf").show();
+                  }
 		else if(select.value == 'vcf'){
 				$("#select_vcf").show();
 				$("#select_xlsx").hide();
