@@ -434,7 +434,7 @@ def fasta_file(chromossome, start, stop, list_samples, user_profile):
     os.remove(basePath+"/FASTA-"+str(chromossome)+"-"+str(start)+"-"+str(stop)+".fasta")
     os.remove(PYTERA_PATH+"/static/downloads/subset.vcf")
     
-    path = PYTERA_PATH+'/static/'+ name
+    path = PYTERA_PATH+'/static/downloads/'+ name
     with open(path, "rb") as fa:
         data = fa.read()
     response = HttpResponse( data, content_type='text/plain')
