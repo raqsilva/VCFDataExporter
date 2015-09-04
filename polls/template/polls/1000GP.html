@@ -14,9 +14,9 @@
 				{% endfor %}
 			{% endif %}
 		</div>
-		<div id="ajaxwrapper2"></div>
+		
+		
 				<form action="" method="POST" enctype="multipart/form-data" id="post-form" >
-
 				
 					{% csrf_token %}
 					<div><h4><i><b>1- </b>Choose Dataset</i></h4></div><br>
@@ -37,7 +37,7 @@
 <br>
 <br>
 <div><h4><i><b>4- </b>Pick your populations</i></h4></div><br> 
-<div class="box_picker">	
+<div class="box_picker"><ul id="id_populations">
 <li>European Ancestry (EUR)<ul id="id_populations_0">
 <li><label for="id_populations_0_0"><input class="checkbox1" id="id_populations_0_0" name="populations" value="GBR" type="checkbox"> GBR</label></li>
 <li><label for="id_populations_0_1"><input class="checkbox1" id="id_populations_0_1" name="populations" value="FIN" type="checkbox"> FIN</label></li>
@@ -88,7 +88,7 @@
 </div>
 <br>
 
-		  <div class='box_input' id='button-upload'><input type="submit" value="Submit" id="sendbutton"/></div>
+		  <div class='box_input' id='button-upload'><input type="submit" value="Submit Query" id="sendbutton"/></div>
 		  <br><br>
 				
 		</form>
@@ -124,6 +124,6 @@
 <div><h6><i><b>Warning: </b>Every Sunday at 00:00 files are deleted</i></h6></div><br>
 </div>
 
-
+<div id="ajaxwrapper2"></div>
 
 {% endblock %}

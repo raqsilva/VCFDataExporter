@@ -105,24 +105,23 @@ $(document).ready(function() {
 //});
 
 
-$(function() {
-    var form = $("#post-form");
-    form.submit(function(e) {
-        $("#sendbutton").attr('disabled', true);
-        $('#spinner').show();
-        $("#ajaxwrapper2").load(
-            form.attr('action') + '#ajaxwrapper2',
-            form.serializeArray(),
-            function(responseText, responseStatus) { 
-                $("#sendbutton").attr('disabled', false);
-                $('#spinner').hide();
-            }
-            
-        );
-        e.preventDefault(); 
-    });
-    
-});
+
+//$(function() {
+//    var form = $("#post-form");
+//    form.submit(function(e) {
+//        $("#sendbutton").attr('disabled', true);
+//        $('#spinner').show();
+//        $("#ajaxwrapper2").load(
+//            form.attr('action') + '#ajaxwrapper2',
+//            form.serializeArray(),
+//            function(responseText, responseStatus) { 
+//                $("#sendbutton").attr('disabled', false);
+//                $('#spinner').hide();
+//            }
+//        );
+//        e.preventDefault();
+//    });
+//});
 
 
 
