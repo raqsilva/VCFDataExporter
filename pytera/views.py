@@ -11,7 +11,11 @@ from django.utils import timezone
 from django.contrib.auth.views import password_reset, password_reset_confirm
 from django.db import IntegrityError
 from django.contrib import messages
+from pytera.settings import BASE_DIR
 
+
+#PYTERA_PATH = str(os.getenv('PYTERA_PATH'))
+PYTERA_PATH = BASE_DIR
 
 
 def login(request):

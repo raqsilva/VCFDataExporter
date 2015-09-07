@@ -6,18 +6,19 @@ import os
 from .vcf_functions import getBasePath, save_binary, getFilePath, parse_fasta
 import subprocess
 import collections
+from pytera.settings import BASE_DIR
 
 
 #PYTERA_PATH = str(os.getenv('PYTERA_PATH'))
-PYTERA_PATH = '/usr/local/share/applications/pytera'
+PYTERA_PATH = BASE_DIR
 
 
 def xlsx_file(chromo, start, stop, named_file, user_profile):
     baseName=getFilePath(named_file)
 
-    subprocess.call(PYTERA_PATH+"/static/tabix-0.2.6/bgzip -c -f "+baseName+' > '+baseName+'.gz', shell=True)
-    subprocess.call(PYTERA_PATH+"/static/tabix-0.2.6/tabix -f -p vcf "+baseName+".gz", shell=True)
-    subprocess.call(PYTERA_PATH+"/static/tabix-0.2.6/tabix -f -p vcf -h "+baseName+".gz"+" "+str(chromo)+":"+str(start)+"-"+str(stop)+" > "+PYTERA_PATH+"/static/downloads/subset.vcf", shell=True)
+    subprocess.call(PYTERA_PATH+"/static/tabix/bgzip -c -f "+baseName+' > '+baseName+'.gz', shell=True)
+    subprocess.call(PYTERA_PATH+"/static/tabix/tabix -f -p vcf "+baseName+".gz", shell=True)
+    subprocess.call(PYTERA_PATH+"/static/tabix/tabix -f -p vcf -h "+baseName+".gz"+" "+str(chromo)+":"+str(start)+"-"+str(stop)+" > "+PYTERA_PATH+"/static/downloads/subset.vcf", shell=True)
     
     vcf_reader = vcf.Reader(filename=PYTERA_PATH+"/static/downloads/subset.vcf")
     
@@ -78,7 +79,7 @@ def xlsx_file(chromo, start, stop, named_file, user_profile):
     os.remove(baseName+".gz")
     os.remove(baseName+".gz.tbi")
     
-    path = PYTERA_PATH+'/static/downloads/documents/' + name
+    path = PYTERA_PATH+'/static/downloads/' + name
     with open(path, "rb") as excel:
         data = excel.read()
     response = HttpResponse( data, content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
@@ -91,12 +92,12 @@ def plot_stats(chromo, start, stop, named_file, user_profile):
     baseName=getFilePath(named_file)
     basePath = getBasePath()
     
-    subprocess.call(PYTERA_PATH+"/static/tabix-0.2.6/bgzip -c -f "+baseName+' > '+baseName+'.gz', shell=True)
-    subprocess.call(PYTERA_PATH+"/static/tabix-0.2.6/tabix -f -p vcf "+baseName+".gz", shell=True)
-    subprocess.call(PYTERA_PATH+"/static/tabix-0.2.6/tabix -f -p vcf -h "+baseName+".gz"+" "+str(chromo)+":"+str(start)+"-"+str(stop)+" > "+PYTERA_PATH+"/static/downloads/subset.vcf", shell=True)
+    subprocess.call(PYTERA_PATH+"/static/tabix/bgzip -c -f "+baseName+' > '+baseName+'.gz', shell=True)
+    subprocess.call(PYTERA_PATH+"/static/tabix/tabix -f -p vcf "+baseName+".gz", shell=True)
+    subprocess.call(PYTERA_PATH+"/static/tabix/tabix -f -p vcf -h "+baseName+".gz"+" "+str(chromo)+":"+str(start)+"-"+str(stop)+" > "+PYTERA_PATH+"/static/downloads/subset.vcf", shell=True)
     
-    subprocess.call(PYTERA_PATH+"/static/bcftools-1.2/bcftools stats "+PYTERA_PATH+"/static/downloads/subset.vcf > "+PYTERA_PATH+"/static/downloads/plots/file.vchk", shell=True)
-    subprocess.call(PYTERA_PATH+"/static/bcftools-1.2/plot-vcfstats "+PYTERA_PATH+"/static/downloads/plots/file.vchk -p "+PYTERA_PATH+"/static/downloads/plots/plots", shell=True)
+    subprocess.call(PYTERA_PATH+"/static/bcftools/bcftools stats "+PYTERA_PATH+"/static/downloads/subset.vcf > "+PYTERA_PATH+"/static/downloads/plots/file.vchk", shell=True)
+    subprocess.call(PYTERA_PATH+"/static/bcftools/plot-vcfstats "+PYTERA_PATH+"/static/downloads/plots/file.vchk -p "+PYTERA_PATH+"/static/downloads/plots/plots", shell=True)
     files_path = ''
     try:
         file1 = 'plots/plots-indels.0.pdf'
@@ -130,7 +131,7 @@ def plot_stats(chromo, start, stop, named_file, user_profile):
         pass
     
     subprocess.call('tar -cvf'+basePath+'/plots/'+'plots.tar -C '+basePath+'/'+files_path, shell=True)
-    subprocess.call(PYTERA_PATH+"/static/tabix-0.2.6/bgzip -f "+basePath+'/plots/'+'plots.tar', shell=True)
+    subprocess.call(PYTERA_PATH+"/static/tabix/bgzip -f "+basePath+'/plots/'+'plots.tar', shell=True)
     name = save_binary('plots/plots.tar.gz', user_profile)
  
     for file_name in os.listdir(PYTERA_PATH+"/static/downloads/plots"):
@@ -152,9 +153,9 @@ def get_fasta(chromo, start, stop, named_file, user_profile, spec_samples):
     baseName=getFilePath(named_file)
     basePath=getBasePath()
 
-    subprocess.call(PYTERA_PATH+"/static/tabix-0.2.6/bgzip -c -f "+baseName+' > '+baseName+'.gz', shell=True)
-    subprocess.call(PYTERA_PATH+"/static/tabix-0.2.6/tabix -f -p vcf "+baseName+".gz", shell=True)
-    subprocess.call(PYTERA_PATH+"/static/tabix-0.2.6/tabix -f -p vcf -h "+baseName+".gz"+" "+str(chromo)+":"+str(start)+"-"+str(stop)+" > "+PYTERA_PATH+"/static/downloads/subset.vcf", shell=True)
+    subprocess.call(PYTERA_PATH+"/static/tabix/bgzip -c -f "+baseName+' > '+baseName+'.gz', shell=True)
+    subprocess.call(PYTERA_PATH+"/static/tabix/tabix -f -p vcf "+baseName+".gz", shell=True)
+    subprocess.call(PYTERA_PATH+"/static/tabix/tabix -f -p vcf -h "+baseName+".gz"+" "+str(chromo)+":"+str(start)+"-"+str(stop)+" > "+PYTERA_PATH+"/static/downloads/subset.vcf", shell=True)
     
     vcf_reader = vcf.Reader(filename=PYTERA_PATH+"/static/downloads/subset.vcf")
     if spec_samples=='':

@@ -7,17 +7,18 @@ from .vcf_functions import getBasePath, save_binary, getFilePath, parse_fasta, g
 import subprocess
 import collections
 from .dictionaries import esp_col_dic
+from pytera.settings import BASE_DIR
 
 
 #PYTERA_PATH = str(os.getenv('PYTERA_PATH'))
-PYTERA_PATH = '/usr/local/share/applications/pytera'
+PYTERA_PATH = BASE_DIR
 
 # MAF Minor Allele Frequency in percent in the order of EA,AA,All
 def filter_vcf(chromo, start, stop, user_profile, ea, aa, total, ea_sign, aa_sign, total_sign):
     basePath=getBasePath()
     espPath = getEspPath(chromo)
     
-    subprocess.call(PYTERA_PATH+"/static/tabix-0.2.6/tabix -f -p vcf -h "+espPath+" "+str(chromo)+":"+str(start)+"-"+str(stop)+" > "+PYTERA_PATH+"/static/downloads/subset.vcf", shell=True)
+    subprocess.call(PYTERA_PATH+"/static/tabix/tabix -f -p vcf -h "+espPath+" "+str(chromo)+":"+str(start)+"-"+str(stop)+" > "+PYTERA_PATH+"/static/downloads/subset.vcf", shell=True)
     
     vcf_reader = vcf.Reader(filename=basePath+"/subset.vcf")
     vcf_writer = vcf.Writer(open(basePath+"/ESP.chr"+str(chromo)+".subset.vcf", 'w'), vcf_reader)
@@ -227,7 +228,7 @@ def filter_vcf(chromo, start, stop, user_profile, ea, aa, total, ea_sign, aa_sig
                         break   
 
     vcf_writer.close()
-    subprocess.call(PYTERA_PATH+"/static/tabix-0.2.6/bgzip -c -f "+basePath+"/ESP.chr"+str(chromo)+".subset.vcf"+' > '+basePath+"/ESP.chr"+str(chromo)+".subset.vcf.gz", shell=True)
+    subprocess.call(PYTERA_PATH+"/static/tabix/bgzip -c -f "+basePath+"/ESP.chr"+str(chromo)+".subset.vcf"+' > '+basePath+"/ESP.chr"+str(chromo)+".subset.vcf.gz", shell=True)
     
     file = "ESP.chr"+str(chromo)+".subset.vcf.gz"
     name = save_binary(file, user_profile)

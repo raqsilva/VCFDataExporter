@@ -9,9 +9,11 @@ from Bio import SeqIO
 from .models import Document, Vcf
 from django.core.files import File
 import subprocess
+from pytera.settings import BASE_DIR
+
 
 #PYTERA_PATH = str(os.getenv('PYTERA_PATH'))
-PYTERA_PATH = '/usr/local/share/applications/pytera'
+PYTERA_PATH = BASE_DIR
 
 
 def getBasePath():
@@ -78,7 +80,7 @@ def MySamples(pop_list):# pop_list is a list with the picked populations returne
 def ped_teste(chromossome, start, stop, list_samples):
     baseName=getBaseFileName(chromossome)
 
-    subprocess.call(PYTERA_PATH+"/static/tabix-0.2.6/tabix -f -p vcf -h "+baseName+" "+str(chromossome)+":"+str(start)+"-"+str(stop)+" > "+PYTERA_PATH+"/static/downloads/subset.vcf", shell=True)
+    subprocess.call(PYTERA_PATH+"/static/tabix/tabix -f -p vcf -h "+baseName+" "+str(chromossome)+":"+str(start)+"-"+str(stop)+" > "+PYTERA_PATH+"/static/downloads/subset.vcf", shell=True)
     
     vcf_reader = vcf.Reader(filename=PYTERA_PATH+"/static/downloads/subset.vcf")
     dic_a={}
@@ -137,7 +139,7 @@ def ped_file(chromossome, start, stop, list_samples, user_profile):
     files_path = str(' '+file1) + str(' '+file2) + str(' '+file3)
 
     subprocess.call('tar -cvf'+basePath+'/plots/'+'ped_files.tar -C '+basePath+'/'+files_path, shell=True)
-    subprocess.call(PYTERA_PATH+"/static/tabix-0.2.6/bgzip -f "+basePath+'/plots/'+'ped_files.tar', shell=True)
+    subprocess.call(PYTERA_PATH+"/static/tabix/bgzip -f "+basePath+'/plots/'+'ped_files.tar', shell=True)
     name = save_binary('plots/ped_files.tar.gz', user_profile)
     
     os.remove(basePath+'/plots/'+'ped_files.tar.gz')
@@ -157,7 +159,7 @@ def ped_file(chromossome, start, stop, list_samples, user_profile):
 def rdf_teste(chromossome, start, stop, list_samples):
     baseName=getBaseFileName(chromossome)
 
-    subprocess.call(PYTERA_PATH+"/static/tabix-0.2.6/tabix -f -p vcf -h "+baseName+" "+str(chromossome)+":"+str(start)+"-"+str(stop)+" > "+PYTERA_PATH+"/static/downloads/subset.vcf", shell=True)
+    subprocess.call(PYTERA_PATH+"/static/tabix/tabix -f -p vcf -h "+baseName+" "+str(chromossome)+":"+str(start)+"-"+str(stop)+" > "+PYTERA_PATH+"/static/downloads/subset.vcf", shell=True)
     
     vcf_reader = vcf.Reader(filename=PYTERA_PATH+"/static/downloads/subset.vcf")
     if list_samples[0]=="all":
@@ -264,7 +266,7 @@ def rdf_file_multi_allelic(chromossome, start, stop, list_samples, user_profile)
     file2 = "snp-ID-"+str(chromossome)+"-"+str(start)+"-"+str(stop)+".txt"
     files_path = str(' '+file1) + str(' '+file2)
     subprocess.call('tar -cvf'+basePath+'/plots/'+'rdf_files.tar -C '+basePath+'/'+files_path, shell=True)
-    subprocess.call(PYTERA_PATH+"/static/tabix-0.2.6/bgzip -f "+basePath+'/plots/'+'rdf_files.tar', shell=True)
+    subprocess.call(PYTERA_PATH+"/static/tabix/bgzip -f "+basePath+'/plots/'+'rdf_files.tar', shell=True)
     name = save_binary('plots/rdf_files.tar.gz', user_profile)
     os.remove(basePath+'/plots/'+'rdf_files.tar.gz')
     os.remove(basePath+"/RDF-"+str(chromossome)+"-"+str(start)+"-"+str(stop)+".rdf")
@@ -281,7 +283,7 @@ def rdf_file_multi_allelic(chromossome, start, stop, list_samples, user_profile)
 def nexus_teste(chromossome, start, stop, list_samples):
     baseName=getBaseFileName(chromossome)
 
-    subprocess.call(PYTERA_PATH+"/static/tabix-0.2.6/tabix -f -p vcf -h "+baseName+" "+str(chromossome)+":"+str(start)+"-"+str(stop)+" > "+PYTERA_PATH+"/static/downloads/subset.vcf", shell=True)
+    subprocess.call(PYTERA_PATH+"/static/tabix/tabix -f -p vcf -h "+baseName+" "+str(chromossome)+":"+str(start)+"-"+str(stop)+" > "+PYTERA_PATH+"/static/downloads/subset.vcf", shell=True)
 
     vcf_reader = vcf.Reader(filename=PYTERA_PATH+"/static/downloads/subset.vcf")
     if list_samples[0]=="all":
@@ -379,7 +381,7 @@ def parse_fasta(chromossome, start, stop):
 def fasta_teste(chromossome, start, stop, list_samples):
     baseName=getBaseFileName(chromossome)
     
-    subprocess.call(PYTERA_PATH+"/static/tabix-0.2.6/tabix -f -p vcf -h "+baseName+" "+str(chromossome)+":"+str(start)+"-"+str(stop)+" > "+PYTERA_PATH+"/static/downloads/subset.vcf", shell=True)
+    subprocess.call(PYTERA_PATH+"/static/tabix/tabix -f -p vcf -h "+baseName+" "+str(chromossome)+":"+str(start)+"-"+str(stop)+" > "+PYTERA_PATH+"/static/downloads/subset.vcf", shell=True)
     
     vcf_reader = vcf.Reader(filename=PYTERA_PATH+"/static/downloads/subset.vcf")
     if list_samples[0]=="all":

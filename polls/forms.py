@@ -58,7 +58,7 @@ class format_form_uploaded(forms.Form):
 
 class exac_format(forms.Form):
     OPTIONS =(
-        ("",""), ("xlsx","Excel(.xlsx)"), ("vcf", "VCF"),
+        ("",""), ("xlsx","Excel(.xlsx)"),
         )
     exac_form = forms.ChoiceField(label='Format', choices=OPTIONS, required = False)
 

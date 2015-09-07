@@ -15,11 +15,11 @@ import mimetypes
 from django.contrib import messages
 import subprocess
 from .validator import *
-
+from pytera.settings import BASE_DIR
 
 
 #PYTERA_PATH = str(os.getenv('PYTERA_PATH'))
-PYTERA_PATH = '/usr/local/share/applications/pytera'
+PYTERA_PATH = BASE_DIR
 
 
 #CHROMOSSOME = "Name"
