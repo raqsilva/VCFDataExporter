@@ -1,8 +1,11 @@
 db.sqlite3
 static/downloads/
-static/bcftools/
-static/tabix/
-static/vcftools/
+static/bcftools/*
+!static/bcftools/README
+static/tabix/*
+!static/tabix/README
+static/vcftools/*
+!static/vcftools/README.txt
 polls/.*.swp
 polls/__pycache__/
 polls/migrations/__pycache__/
