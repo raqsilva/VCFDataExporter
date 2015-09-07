@@ -30,7 +30,7 @@ with open(os.path.join(BASE_DIR, 'pytera/key.txt')) as f:
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = TEMPLATE_DEBUG = True
+DEBUG = TEMPLATE_DEBUG = False
 
 
 ALLOWED_HOSTS = []
