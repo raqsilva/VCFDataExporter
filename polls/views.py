@@ -38,7 +38,7 @@ def result(request):
         documents = Document.objects.filter(user_profile=request.user.userprofile).all()
         vcf_files = Vcf.objects.filter(user_profile=request.user.userprofile).all()
     else:
-        return redirect('/authentication/')
+        return redirect('authentication')
     return render(request, 'polls/result.html', {'documents': documents, 'vcf_files':vcf_files})
 
 
@@ -46,12 +46,12 @@ def result(request):
 def clear(request):
     Document.objects.filter(user_profile=request.user.userprofile).all().delete()
     #Document.objects.all().delete()
-    return redirect('/documents/')
+    return redirect('documents')
 
 
 def clear_vcf(request):
     Vcf.objects.filter(user_profile=request.user.userprofile).all().delete()
-    return redirect('/documents/')
+    return redirect('documents')
 
 
 
@@ -110,7 +110,7 @@ def exac_view(request):
                 if format_exac=='xlsx':
                     return exac_xlsx_file(str(chromo), int(start), int(stop), user_profile, list(exac_cols))
                 
-                return redirect('/documents/')
+                return redirect('documents')
                 
         else:
             form = information()
@@ -118,7 +118,7 @@ def exac_view(request):
             exac_excel_columns = exac_columns()
             exac_form = exac_format()
     else:
-        return redirect('/authentication/')
+        return redirect('authentication')
     return render(request, 'polls/exac.html', {'form':form, 'region':region, 'documents': documents, 'vcf_files':vcf_files,
                                                'exac_cols':exac_excel_columns, 'exac_form':exac_form}) 
 
@@ -156,7 +156,7 @@ def esp_view(request):
                 elif format_evs=="xlsx":
                     return evs_xlsx_file(str(chromo), int(start), int(stop), user_profile, list(esp_columns), ea, aa, total, ea_sign, aa_sign, total_sign)
                     
-                return redirect('/documents/')
+                return redirect('documents')
                 
         else:
             form = information()
@@ -166,7 +166,7 @@ def esp_view(request):
             esp_excel_columns = excel_columns()
             
     else:
-        return redirect('/authentication/')
+        return redirect('authentication')
     return render(request, 'polls/esp.html', {'form':form, 'region':region, 'documents': documents, 'vcf_files':vcf_files,
                                                'evs_form':evs_form, 'maf':maf, 'esp_columns':esp_excel_columns,}) 
 
@@ -205,7 +205,7 @@ def GP_view(request):
                 elif file_format=="fasta":
                     return fasta_file(str(chromo), int(start), int(stop), list(samples), user_profile)
                     
-                return redirect('/documents/')
+                return redirect('documents')
                 #return HttpResponse(str(samples))
                 
         else:
@@ -215,7 +215,7 @@ def GP_view(request):
             frmt = file_format_form()
             
     else:
-        return redirect('/authentication/')
+        return redirect('authentication')
     return render(request, 'polls/1000GP.html', {'form':form, 'picker':picker, 'region':region, 'frmt':frmt,
                                                'documents': documents, 'vcf_files':vcf_files}) 
 
@@ -281,7 +281,7 @@ def upload_view(request):
                 elif format_form=="fasta_up":
                     return get_fasta(str(chromo), int(start), int(stop), doc_name, user_profile, spec_samples)
                     
-                return redirect('/documents/')
+                return redirect('documents')
                 
         else:
             form = information()
@@ -292,7 +292,7 @@ def upload_view(request):
             sample_up = sample_form()
             
     else:
-        return redirect('/authentication/')
+        return redirect('authentication')
     return render(request, 'polls/upload.html', {'form':form, 'region':region, 'form_up':form_up,
                                                 'upload_file':upload_file, 'upload_name':upload_name, 'sample_up':sample_up,
                                                 'documents': documents, 'vcf_files':vcf_files})
@@ -340,7 +340,7 @@ def validate_view(request):
                 upload_file = ProfileForm(instance=request.user.userprofile)
             
     else:
-        return redirect('/authentication/')
+        return redirect('authentication')
     return render(request, 'polls/validate.html', {'upload_file':upload_file, 'documents': documents, 'vcf_files':vcf_files}) 
 
 

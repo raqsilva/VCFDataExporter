@@ -44,7 +44,7 @@ def auth_view(request):
             messages.add_message(request, messages.ERROR, 'The user is not active, please wait for permission')
             return render(request, 'polls/login.html')
     else:
-        return redirect('/accounts/invalid')
+        return redirect('invalid')
  
 
 def logout(request):
@@ -53,7 +53,7 @@ def logout(request):
 
 
 def invalid_login(request):
-    return redirect('/authentication/')
+    return redirect('authentication')
 
 
 def register_user(request):
@@ -86,7 +86,7 @@ def register_user(request):
             send_mail(email_subject, email_body, None,
                 [email], fail_silently=False)
 
-            return redirect('/register_success')
+            return redirect('register_success')
     else:
         form = RegistrationForm()
 
