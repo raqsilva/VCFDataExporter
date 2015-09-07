@@ -18,7 +18,7 @@
 				<form action="" method="POST" enctype="multipart/form-data" >
 				
 					{% csrf_token %}
-                <div><h4><i><b>1- </b>Upload File to Validate</i></h4></div><br>
+                <div><h4><i><b>1- </b>Upload VCF File to Validate</i></h4></div><br>
                 
                 <p>{{ upload_file.non_field_errors }}</p>
                 <p>{{ upload_file.docfile.label_tag }} {{ upload_file.docfile.help_text }}</p>
@@ -28,6 +28,8 @@
                 </p>
 
 <br>
+<div><h5><i><b>Note: </b>It will output a text file with the issues</i></h5></div><br>
+
 		  <div class='box_input'><input type="submit" /></div>
 		  <br><br>
 		</form>
