@@ -54,19 +54,6 @@ def save_vcf(filename, user_profile):
 
 
 
-def FTP_teste(chromossome):
-    baseName=getBaseFileName(chromossome)
-    
-    ftp = FTP("ftp.1000genomes.ebi.ac.uk")
-    ftp.login()
-    ftp.cwd('/vol1/ftp/release/20130502')
-    fhandle = open(baseName, 'wb')
-    readme=ftp.retrbinary('RETR '+ftp_dic[str(chromossome)],fhandle.write)
-    fhandle.close()
-    ftp.quit()
-
-    
-    
 def MySamples(pop_list):# pop_list is a list with the picked populations returned by pop_picker
     dic=pop_samples #its a dictionary with populations as key and a list of samples
     samples=[]
