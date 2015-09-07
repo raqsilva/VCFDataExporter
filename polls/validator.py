@@ -21,7 +21,7 @@ def validate_vcf(named_file, user_profile):
     with open(PYTERA_PATH + '/static/downloads/output_unfilter.txt', 'r') as out:
         x = out.readlines()
         for elem in x:
-            if '/usr/local/share/applications/pytera/static/' or '/usr/local/share/applications/pytera' in elem:
+            if PYTERA_PATH+'/static/' or PYTERA_PATH in elem:
                 elem = elem.replace("/usr/local/share/applications/pytera/static/", "")
                 elem = elem.replace('/usr/local/share/applications/pytera', '')
             new_out.write(elem)
