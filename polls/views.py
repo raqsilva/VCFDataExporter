@@ -14,6 +14,7 @@ from django.utils.datastructures import MultiValueDictKeyError
 import mimetypes
 from django.contrib import messages
 import subprocess
+from .validator import *
 
 
 
@@ -294,4 +295,56 @@ def upload_view(request):
         return redirect('/authentication/')
     return render(request, 'polls/upload.html', {'form':form, 'region':region, 'form_up':form_up,
                                                 'upload_file':upload_file, 'upload_name':upload_name, 'sample_up':sample_up,
-                                                'documents': documents, 'vcf_files':vcf_files}) 
+                                                'documents': documents, 'vcf_files':vcf_files})
+
+
+
+def validate_view(request):
+    if request.user.is_authenticated():
+        documents = Document.objects.filter(user_profile=request.user.userprofile).all()
+        vcf_files = Vcf.objects.filter(user_profile=request.user.userprofile).all()
+        
+        if request.method == 'POST':
+            upload_file = ProfileForm(request.POST, request.FILES)
+            
+            if upload_file.is_valid():
+                user_profile = request.user.userprofile
+            
+            try:
+                resp = validate_file(request.FILES['docfile'])
+                if resp == 1:
+                    messages.add_message(request, messages.ERROR, 'The uploaded file is not a VCF or Gizipped file, please provide a new file')
+                    documents = Document.objects.filter(user_profile=request.user.userprofile).all()
+                    vcf_files = Vcf.objects.filter(user_profile=request.user.userprofile).all()
+                    return render(request, 'polls/validate.html', {'upload_file':upload_file, 'documents': documents, 'vcf_files':vcf_files})
+                
+                elif resp==2:
+                    messages.add_message(request, messages.ERROR, 'The uploaded file is not a VCF file format, please provide a new file')
+                    documents = Document.objects.filter(user_profile=request.user.userprofile).all()
+                    vcf_files = Vcf.objects.filter(user_profile=request.user.userprofile).all()
+                    return render(request, 'polls/validate.html', {'upload_file':upload_file, 'documents': documents, 'vcf_files':vcf_files})
+                
+                else:
+                    pass
+                newdoc = Vcf(vcf_file = request.FILES['docfile'], user_profile = user_profile)
+                doc = request.FILES['docfile']
+                doc_name = str(doc.name)
+                newdoc.save()
+                
+                return validate_vcf(doc_name, user_profile)
+
+            except MultiValueDictKeyError:
+                pass
+
+        else:
+                upload_file = ProfileForm(instance=request.user.userprofile)
+            
+    else:
+        return redirect('/authentication/')
+    return render(request, 'polls/validate.html', {'upload_file':upload_file, 'documents': documents, 'vcf_files':vcf_files}) 
+
+
+
+
+
+

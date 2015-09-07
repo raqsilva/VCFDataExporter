@@ -75,38 +75,45 @@ h2, h3, h4 {
     top: 85px;
 }
 
-.button_tool {
+.button_validate {
     position: absolute;
     color: white;
     left: 400px;
     top: 85px;
 }
 
+.button_tool {
+    position: absolute;
+    color: white;
+    left: 545px;
+    top: 85px;
+}
+
 .button_docs {
     position: absolute;
     color: white;
-    left: 500px;
+    left: 640px;
     top: 85px;
 }
 
 .button_login {
     position: absolute;
     color: white;
-    left: 650px;
+    left: 775px;
     top: 85px;
 }
 
 .button_register {
     position: absolute;
     color: white;
-    left: 765px;
+    left: 885px;
     top: 85px;
 }
 
 .button_contact {
     position: absolute;
     color: white;
-    left: 895px;
+    left: 1000px;
     top: 85px;
 }
 

@@ -12,6 +12,7 @@ urlpatterns = patterns('',
     url(r'^esp/$', views.esp_view),
     url(r'^1000GP/$', views.GP_view),
     url(r'^upload/$', views.upload_view),
+    url(r'^validate/$', views.validate_view),
 
 )
 

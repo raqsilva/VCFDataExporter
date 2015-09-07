@@ -41,7 +41,8 @@ def auth_view(request):
                 pass
             return redirect('/')
         else:
-            return HttpResponse('user not active')
+            messages.add_message(request, messages.ERROR, 'The user is not active, please wait for permission')
+            return render(request, 'polls/login.html')
     else:
         return redirect('/accounts/invalid')
  
@@ -103,7 +104,8 @@ def register_confirm(request, activation_key):
 
     #check if the activation key has expired, if it hase then render confirm_expired.html
     if user_profile.key_expires < timezone.now():
-        return HttpResponse('expired')
+        messages.add_message(request, messages.ERROR, 'The key has expired')
+        return render(request, 'polls/login.html')
     #if the key hasn't expired save user and set him as active and render some template to confirm activation
     user = user_profile.user
     user.is_active = True
