@@ -4,8 +4,10 @@ static/downloads/1000GP/*
 !static/downloads/1000GP/rename.py
 static/downloads/ESP/*
 !static/downloads/ESP/README
+!static/downloads/ESP/rename.py
 static/downloads/ExAC/*
 !static/downloads/ExAC/README
+!static/downloads/ExAC/rename.py
 static/downloads/documents/*
 !static/downloads/documents/README
 static/downloads/plots/*
