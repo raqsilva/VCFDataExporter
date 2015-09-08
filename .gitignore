@@ -1,5 +1,14 @@
 db.sqlite3
-static/downloads/
+static/downloads/1000GP/*
+!static/downloads/1000GP/README
+static/downloads/ESP/*
+!static/downloads/ESP/README
+static/downloads/ExAC/*
+!static/downloads/ExAC/README
+static/downloads/documents/*
+!static/downloads/documents/README
+static/downloads/plots/*
+!static/downloads/plots/README
 static/bcftools/*
 !static/bcftools/README
 static/tabix/*
