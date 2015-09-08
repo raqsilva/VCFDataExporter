@@ -33,12 +33,10 @@ with open(os.path.join(BASE_DIR, 'pytera/key.txt')) as f:
 DEBUG = TEMPLATE_DEBUG = False
 
 
-ALLOWED_HOSTS = []
-
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
 
-SESSION_EXPIRE_AT_BROWSER_CLOSE=True
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 
 
 EMAIL_HOST = 'localhost'
