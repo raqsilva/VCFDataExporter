@@ -1,0 +1,9 @@
+BY USING THE PROGRAM PROVIDED HERE, YOU ACCEPT AND AGREE TO BE BOUND BY THE TERMS OF THE LICENSE AGREEMENT. 
+
+Your further acknowledge that the Work is distributed, in part, under and subject to the provisions of licenses for: (a) Biopython, Copyright © 2013 Biopython Developers (http://biopython.org/wiki/Main_Page) under the Biopython License (http://www.biopython.org/DIST/LICENSE); (b) Pyvcf, Copyright © 2011-2012 Population Genetics Technologies Ltd, Copyright © 2011 John Dougherty under licenses from the copyright holders (https://github.com/jamescasbon/PyVCF/blob/master/LICENSE); (c) Htslib, Copyright © 2012-2014 Genome Research Ltd under the The MIT/Expat License from the copyright holders (https://github.com/samtools/htslib/blob/develop/LICENSE); (d) Xlswriter, Copyright © 2013 John McNamara <jmcnamara@cpan.org> under license from the copyright holders (https://github.com/jmcnamara/XlsxWriter/blob/master/LICENSE.txt); and (e) Bcftools, Copyright © 2012-2014  Genome Research Ltd under the The MIT/Expat License from the copyright holders (https://github.com/samtools/bcftools/blob/develop/LICENSE).
+
+DATASETS
+
+Exome Variant Server, NHLBI GO Exome Sequencing Project (ESP), Seattle, WA (URL: http://evs.gs.washington.edu/EVS/) 
+Exome Aggregation Consortium (ExAC), Cambridge, MA (URL: http://exac.broadinstitute.org)
+An integrated map of genetic variation from 1,092 human genomes, McVean et Al, Nature 491, 56–65 (01 November 2012) doi:10.1038/nature11632
