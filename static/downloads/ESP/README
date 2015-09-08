@@ -1,3 +1,4 @@
 Exome Sequencing Project (ESP)
 VCF files are available at the Exome Variant Server: http://evs.gs.washington.edu/EVS/
 This folder must contain all the gzipped vcf files for each chromosome as well as the tabix indexed file.
+Please run 'python rename.py' in this directory to untar, gzip, tbi and rename all the files.
