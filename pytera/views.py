@@ -43,7 +43,7 @@ def auth_view(request):
                 new_profile.save()
             except IntegrityError:
                 pass
-            return redirect('/')
+            return redirect('index')
         else:
             messages.add_message(request, messages.ERROR, 'The user is not active, please wait for permission')
             return render(request, 'polls/login.html')
@@ -101,7 +101,7 @@ def register_user(request):
 def register_confirm(request, activation_key):
     #check if user is already logged in and if he is redirect him to some other url, e.g. home
     if request.user.is_authenticated():
-        HttpResponseRedirect('/')
+        return redirect('index')
 
     # check if there is UserProfile which matches the activation key (if not then display 404)
     user_profile = get_object_or_404(UserProfile, activation_key=activation_key)
@@ -124,13 +124,13 @@ def register_success(request):
 
 def reset_confirm(request, uidb64=None, token=None):
     return password_reset_confirm(request, template_name='registration/reset_confirm.html',
-        uidb64=uidb64, token=token, post_reset_redirect='/')
+        uidb64=uidb64, token=token, post_reset_redirect='index')
 
 
 def reset(request):
     return password_reset(request, template_name='registration/reset.html',
         email_template_name='registration/reset_email.html',
-        post_reset_redirect='/')
+        post_reset_redirect='index')
     
     
  

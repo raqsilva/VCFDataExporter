@@ -3,7 +3,7 @@ from . import views
 
 
 urlpatterns = patterns('',
-    url(r'^$', views.index),
+    url(r'^$', views.index, name = 'index'),
     url(r'^documents/$', views.result, name = 'documents'),
     url(r'^clear/$', views.clear),
     url(r'^clear/vcf$', views.clear_vcf),
