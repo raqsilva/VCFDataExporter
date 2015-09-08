@@ -1,6 +1,7 @@
 db.sqlite3
 static/downloads/1000GP/*
 !static/downloads/1000GP/README
+!static/downloads/1000GP/rename.py
 static/downloads/ESP/*
 !static/downloads/ESP/README
 static/downloads/ExAC/*
