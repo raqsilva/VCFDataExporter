@@ -1,0 +1,5 @@
+Exome Aggregation Consortium (ExAC) 
+Files from release 0.3 available at ftp://ftp.broadinstitute.org/pub/ExAC_release/release0.3/
+This folder must contain the vcf gizipped file and the tabix indexed file:
+ExAC.r0.3.sites.vep.vcf.gz
+ExAC.r0.3.sites.vep.vcf.gz.tbi
