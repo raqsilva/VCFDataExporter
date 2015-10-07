@@ -7,74 +7,57 @@
         <meta charset="utf-8">
         <link rel="icon" href="{% static 'images/favicon.ico' %}">
         <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+        <!--
         <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+        -->
         <link rel="stylesheet" href="{% static 'css/poll.css' %}">
         <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
         <script src="//code.jquery.com/jquery-1.10.2.js"></script>
         <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
         <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script> <!-- message alert -->
         <script type="text/javascript" src="{% static 'css/tool_js.js' %}"></script>
+        <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
         
        <!-- <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script>-->
         
         
     </head>
     <body >
-        <div class="page-header">
-            
-            <h1><p>Vcf</p><p>Data</p><p>Exporter</p></h1>
-            
-            <a href="{% url 'polls.views.index' %}">
-            <p class='button_header'>
-                <span class="glyphicon glyphicon-home" aria-hidden="true"></span>
-                Home
-            </p>
-            </a>
-            <a href="{% url 'polls.views.validate_view' %}">
-            <p class='button_validate'>
-                <span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>
-                Validate VCF
-            </p>
-            </a>
-            <a href="{% url 'polls.views.GP_view' %}">
-            <p class='button_tool'>
-                <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
-                Tool
-            </p>
-            </a>
-            <a href="{% url 'polls.views.result' %}">
-            <p class='button_docs'>
-                <span class="glyphicon glyphicon-folder-open" aria-hidden="true"></span>
-                Documents
-            </p>
-            </a>
+        <div class="navbar navbar-default navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+          <a href="{% url 'polls.views.index' %}" class="navbar-brand">VcfDataExporter</a>
+
+        </div>
+        <div class="navbar-collapse collapse" id="navbar-main">
+          <ul class="nav navbar-nav">
             {% if user.is_authenticated %}
-            <a href="{% url 'pytera.views.logout' %}">
-            <p class='button_login'>
-                <span class="glyphicon glyphicon-off" aria-hidden="true"></span>
-                Logout
-            </p>
+            <li>
+              <a href="{% url 'pytera.views.logout' %}">Logout</a>
+            </li>
             {% else %}
-            <a href="{% url 'pytera.views.login' %}">
-            <p class='button_login'>
-                <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
-                Login
-            </p>
+            <li>
+              <a href="{% url 'pytera.views.login' %}">Login</a>
+            </li>
             {% endif %}
-            </a>
-            <a href="{% url 'pytera.views.register_user' %}">
-            <p class='button_register'>
-                <span class="glyphicon glyphicon-import" aria-hidden="true"></span>
-                Register
-            </p>
-            </a>
-            <a href="#">
-            <p class='button_contact'>
-                <span class="glyphicon glyphicon-phone-alt" aria-hidden="true"></span>
-                Contacts
-            </p>
-            </a>
-    
+            <li>
+              <a href="{% url 'polls.views.GP_view' %}">Tool</a>
+            </li>
+            <li>
+              <a href="{% url 'polls.views.validate_view' %}">Validate VCF</a>
+            </li>
+            <li>
+              <a href="{% url 'polls.views.result' %}">Documents</a>
+            </li>
+            <li>
+              <a href="{% url 'pytera.views.register_user' %}">Register</a>
+            </li>
+            <li>
+              <a href="#">Contacts</a>
+            </li>
+            </ul>
+        </div>
+        </div>
         </div>
             {% block content %}
             {% endblock %}

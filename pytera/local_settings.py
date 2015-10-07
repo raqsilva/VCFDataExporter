@@ -8,11 +8,11 @@ DATABASES = {
     }
 }
 
-DEBUG = True
+DEBUG = TEMPLATE_DEBUG = True
 
 #template location
 TEMPLATE_DIRS = (
-'/usr/local/share/applications/pytera/polls/template/',
+    os.path.join(BASE_DIR, "polls/template/"),
 )
 
 
