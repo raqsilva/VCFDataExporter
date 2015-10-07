@@ -2,8 +2,11 @@
 
 {% block content %}
 
-<div class="box_tool">
-		<div class="web-app">
+<div class="page-header" id="banner">
+    <div class="row">
+		
+<div class="col-lg-9">
+		
 		<div id="messages">
 			{% if messages %}
 				{% for message in messages %}
@@ -15,28 +18,27 @@
 			{% endif %}
 		</div>
 		
-		
 				<form action="" method="POST" enctype="multipart/form-data" id="post-form" >
 				
 					{% csrf_token %}
-					<div><h4><i><b>1- </b>Choose Dataset</i></h4></div><br>
+					<div><h5><i><b>1- </b>Choose Dataset</i></h5></div><br>
 					<b><a href="{% url 'polls.views.GP_view' %}" >1000 Genomes Project</a></b>&nbsp; &nbsp; &nbsp; &nbsp;
 					<b><a href="{% url 'polls.views.esp_view' %}" >Exome Sequencing Project</a></b>&nbsp; &nbsp; &nbsp; &nbsp;
 					<b><a href="{% url 'polls.views.exac_view' %}" >ExAC</a></b>&nbsp; &nbsp; &nbsp; &nbsp;
 					<b><a href="{% url 'polls.views.upload_view' %}" >Upload your VCF file</a></b>
 						<br><br>
-				<div><h4><i><b>2- </b>Choose the chromosome and region to handle</i></h4></div><br>
+				<div><h5><i><b>2- </b>Choose the chromosome and region to handle</i></h5></div><br>
 				  {{ form.as_p }}
 				  <br>
 				  {{ region.as_p }}
                   
-				<div><h5><i><b>Note: </b>It's being used the GRCh37 Assembly</i></h5></div><br>
-				<div><h4><i><b>3- </b>Type of file format you want to export</i></h4></div><br> 
+				<div><h6><i><b>Note: </b>It's being used the GRCh37 Assembly</i></h6></div><br>
+				<div><h5><i><b>3- </b>Type of file format you want to export</i></h5></div><br> 
 				  {{ frmt }}
 <br>
 <br>
 <br>
-<div><h4><i><b>4- </b>Pick your populations</i></h4></div><br> 
+<div><h5><i><b>4- </b>Pick your populations</i></h5></div>
 <div class="box_picker"><ul id="id_populations">
 <li>European Ancestry (EUR)<ul id="id_populations_0">
 <li><label for="id_populations_0_0"><input class="checkbox1" id="id_populations_0_0" name="populations" value="GBR" type="checkbox"> GBR</label></li>
@@ -96,10 +98,11 @@
 <div id="spinner" class="spinner" style="display:none;"><img id="img-spinner" src="/static/images/loader.gif" /></div>
 
 </div>
-</div>
 
-<div class='box_docs'>
-		<div><h5><i>Documents Created</i></h5></div>
+
+<div class="col-lg-13">
+
+		<div><h6><i>Documents Created</i></h6></div>
 		{% if documents %}
 	<ul>
 		{% for document in documents %}
@@ -110,7 +113,7 @@
 		<p>No documents.</p>
 	{% endif %}
 	<br>
-		<div><h5><i>Uploaded VCF's</i></h5></div>
+		<div><h6><i>Uploaded VCF's</i></h6></div>
 		{% if vcf_files %}
 	<ul>
 		{% for vcf in vcf_files %}
@@ -122,6 +125,8 @@
 	{% endif %}
 <br>
 <div><h6><i><b>Warning: </b>Every Sunday at 00:00 files are deleted</i></h6></div><br>
+</div>
+</div>
 </div>
 
 <div id="ajaxwrapper2"></div>

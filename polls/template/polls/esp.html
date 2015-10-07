@@ -2,8 +2,11 @@
 
 {% block content %}
 
-<div class="box_tool">
-		<div class="web-app">
+<div class="page-header" id="banner">
+    <div class="row">
+		
+<div class="col-lg-9">
+		
 		<div id="messages">
 			{% if messages %}
 				{% for message in messages %}
@@ -14,23 +17,24 @@
 				{% endfor %}
 			{% endif %}
 		</div>
+		
 				<form action="" method="POST" enctype="multipart/form-data" >
 				
 					{% csrf_token %}
-					<div><h4><i><b>1- </b>Choose Dataset</i></h4></div><br>
+					<div><h6><i><b>1- </b>Choose Dataset</i></h6></div><br>
 					<b><a href="{% url 'polls.views.GP_view' %}" >1000 Genomes Project</a></b>&nbsp; &nbsp; &nbsp; &nbsp;
 					<b><a href="{% url 'polls.views.esp_view' %}" >Exome Sequencing Project</a></b>&nbsp; &nbsp; &nbsp; &nbsp;
 					<b><a href="{% url 'polls.views.exac_view' %}" >ExAC</a></b>&nbsp; &nbsp; &nbsp; &nbsp;
 					<b><a href="{% url 'polls.views.upload_view' %}" >Upload your VCF file</a></b>
 						<br><br>
-				<div><h4><i><b>2- </b>Choose the chromosome and region to handle</i></h4></div><br>
+				<div><h6><i><b>2- </b>Choose the chromosome and region to handle</i></h6></div><br>
 				  {{ form.as_p }}
 				  <br>
 				  {{ region.as_p }}
                   
 
-				<div><h5><i><b>Note: </b>It's being used the GRCh37 Assembly</i></h5></div><br>
-				<div><h4><i><b>3- </b>Type of file format you want to export</i></h4></div><br> 
+				<div><h6><i><b>Note: </b>It's being used the GRCh37 Assembly</i></h6></div><br>
+				<div><h6><i><b>3- </b>Type of file format you want to export</i></h6></div><br> 
 	
 <select id="id_esp_format" name="esp_format" onchange="SelectHandler(this)">
     <option selected="selected" value=""></option>
@@ -46,13 +50,13 @@
 <br>
 <div id='select_vcf' hidden=True>
 		
-				<div><h4><i><b>4- </b>Filter VCF file by Minor Allele Frequency (MAF) in percent, choose the parameters</i></h4></div><br> 
+				<div><h6><i><b>4- </b>Filter VCF file by Minor Allele Frequency (MAF) in percent, choose the parameters</i></h6></div><br> 
 						{{ maf.as_p }}
 						
 </div>
 <br>
 <div id='select_xlsx' hidden=True>
-<div><h4><i><b>5- </b>Choose the columns you want to add in the excel file</i></h4></div>
+<div><h6><i><b>5- </b>Choose the columns you want to add in the excel file</i></h6></div>
 
 						{% include "polls/cols_esp_template.html" %}
 
@@ -61,10 +65,12 @@
 		  <br><br>
 		</form>
 </div>
-</div>
 
-<div class='box_docs'>
-		<div><h5><i>Documents Created</i></h5></div>
+
+
+<div class="col-lg-13">
+
+		<div><h6><i>Documents Created</i></h6></div>
 		{% if documents %}
 	<ul>
 		{% for document in documents %}
@@ -75,7 +81,7 @@
 		<p>No documents.</p>
 	{% endif %}
 	<br>
-		<div><h5><i>Uploaded VCF's</i></h5></div>
+		<div><h6><i>Uploaded VCF's</i></h6></div>
 		{% if vcf_files %}
 	<ul>
 		{% for vcf in vcf_files %}
@@ -85,8 +91,10 @@
 	{% else %}
 		<p>No vcf files</p>
 	{% endif %}
-	<br>
+<br>
 <div><h6><i><b>Warning: </b>Every Sunday at 00:00 files are deleted</i></h6></div><br>
+</div>
+</div>
 </div>
 
 {% endblock %}

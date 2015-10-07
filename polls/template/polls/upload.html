@@ -2,8 +2,11 @@
 
 {% block content %}
 
-<div class="box_tool">
-		<div class="web-app">
+<div class="page-header" id="banner">
+    <div class="row">
+		
+<div class="col-lg-9">
+		
 		<div id="messages">
 			{% if messages %}
 				{% for message in messages %}
@@ -14,29 +17,30 @@
 				{% endfor %}
 			{% endif %}
 		</div>
+		
 				<form action="" method="POST" enctype="multipart/form-data" >
 				
 					{% csrf_token %}
-					<div><h4><i><b>1- </b>Choose Dataset</i></h4></div><br>
+					<div><h5><i><b>1- </b>Choose Dataset</i></h5></div><br>
 					<b><a href="{% url 'polls.views.GP_view' %}" >1000 Genomes Project</a></b>&nbsp; &nbsp; &nbsp; &nbsp;
 					<b><a href="{% url 'polls.views.esp_view' %}" >Exome Sequencing Project</a></b>&nbsp; &nbsp; &nbsp; &nbsp;
 					<b><a href="{% url 'polls.views.exac_view' %}" >ExAC</a></b>&nbsp; &nbsp; &nbsp; &nbsp;
 					<b><a href="{% url 'polls.views.upload_view' %}" >Upload your VCF file</a></b>
 						<br><br>
-				<div><h4><i><b>2- </b>Choose the chromosome and region to handle</i></h4></div><br>
+				<div><h5><i><b>2- </b>Choose the chromosome and region to handle</i></h5></div><br>
 				  {{ form.as_p }}
 				  <br>
 				  {{ region.as_p }}
 				  
 		<br>
-		<div><h4><i><b>3- </b>Choose to upload a file or if it is already uploaded provide the file name with extension</i></h4></div><br>
+		<div><h5><i><b>3- </b>Choose to upload a file or if it is already uploaded provide the file name with extension</i></h5></div><br>
 		<b><a href="javascript:showonlyone2('boxes2');" >Upload File</a></b>&nbsp; &nbsp; &nbsp; &nbsp;
 	   <b><a href="javascript:showonlyone2('boxes1');" >Provide file name</a></b>&nbsp; &nbsp; &nbsp; &nbsp;
 					<br>
 					<div class="boxes" id="boxes1" style="display: none">
 					<br>
 					{{ upload_name }}
-					<div><h5><i><b>Ex: </b>filename.vcf.gz</i></h5></div>
+					<div><h6><i><b>Ex: </b>filename.vcf.gz</i></h6></div>
 					</div>
 					<br>
 					<div class="boxes" id="boxes2" style="display: none">
@@ -48,22 +52,23 @@
 					</p>
 				<br>
 				</div>
-					<div><h4><i><b>4- </b>Choose samples</i></h4></div><br>
+					<div><h5><i><b>4- </b>Choose samples</i></h5></div><br>
 					{{ sample_up }}
-				<div><h5><i><b>Note: </b>Provide comma separated sample(s) or leave blank if all</i></h5></div>
-		<br> <div><h4><i><b>5- </b>Type of file format you want to export</i></h4></div><br> 
+				<div><h6><i><b>Note: </b>Provide comma separated sample(s) or leave blank if all</i></h6></div>
+		<br> <div><h5><i><b>5- </b>Type of file format you want to export</i></h5></div><br> 
 			<p>{{ form_up }}</p>
-			<div><h5><i><b>Note: </b>Excel file limits are 1,048,576 rows by 16,384 columns</i></h5></div><br>
+			<div><h6><i><b>Note: </b>Excel file limits are 1,048,576 rows by 16,384 columns</i></h6></div><br>
 <br>
 
 		  <div class='box_input'><input type="submit" /></div>
 		  <br><br>
 		</form>
 </div>
-</div>
 
-<div class='box_docs'>
-		<div><h5><i>Documents Created</i></h5></div>
+
+<div class="col-lg-13">
+
+		<div><h6><i>Documents Created</i></h6></div>
 		{% if documents %}
 	<ul>
 		{% for document in documents %}
@@ -74,7 +79,7 @@
 		<p>No documents.</p>
 	{% endif %}
 	<br>
-		<div><h5><i>Uploaded VCF's</i></h5></div>
+		<div><h6><i>Uploaded VCF's</i></h6></div>
 		{% if vcf_files %}
 	<ul>
 		{% for vcf in vcf_files %}
@@ -84,8 +89,10 @@
 	{% else %}
 		<p>No vcf files</p>
 	{% endif %}
-	<br>
+<br>
 <div><h6><i><b>Warning: </b>Every Sunday at 00:00 files are deleted</i></h6></div><br>
+</div>
+</div>
 </div>
 
 		  
