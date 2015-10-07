@@ -1414,7 +1414,7 @@ a.bg-danger:focus {
 }
 .page-header {
   padding-bottom: 9.5px;
-  margin: 42px 0 21px;
+  margin: 65px 0 21px;
   border-bottom: 1px solid transparent;
 }
 ul,
@@ -4326,7 +4326,7 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
 .navbar-brand {
   float: left;
   padding: 19.5px 15px;
-  font-size: 19px;
+  font-size: 20px;
   line-height: 21px;
   height: 60px;
 }
@@ -4414,6 +4414,8 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
   .navbar-nav > li > a {
     padding-top: 19.5px;
     padding-bottom: 19.5px;
+    padding-left: 16px;
+    padding-right: 16px;
   }
 }
 .navbar-form {

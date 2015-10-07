@@ -25,7 +25,7 @@
     <body >
         <div class="navbar navbar-default navbar-fixed-top">
         <div class="container">
-            <div class="navbar-header">
+        <div class="navbar-header">
           <a href="{% url 'polls.views.index' %}" class="navbar-brand">VcfDataExporter</a>
 
         </div>
@@ -59,8 +59,10 @@
         </div>
         </div>
         </div>
+        <div class="container">
             {% block content %}
             {% endblock %}
+        </div>
     </body>
 </html>
 

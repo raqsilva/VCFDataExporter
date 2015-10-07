@@ -1,5 +1,6 @@
 db.sqlite3
 logs/*
+!logs/README
 static/downloads/1000GP/*
 !static/downloads/1000GP/README
 !static/downloads/1000GP/rename.py
