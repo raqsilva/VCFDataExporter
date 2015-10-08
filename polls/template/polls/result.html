@@ -1,8 +1,11 @@
 {% extends 'polls/base.html' %}
 
 {% block content %}
-<div class="web-app">
-    <div><h4><i>Documents Created</i></h4></div>
+<div class="page-header" id="banner">
+    <div class="row">
+		<div class="col-lg-9">
+			
+    <div><h5><i><b>1- </b>Documents Created</i></h5></div>
 	{% if documents %}
 	<ul>
 		{% for document in documents %}
@@ -10,16 +13,14 @@
 		{% endfor %}
 	</ul>
 	{% else %}
-		<p>No documents.</p>
+		<p>No documents</p>
 	{% endif %}
 	<br>
-<div><p class='button2_pos'><a href="{% url 'polls.views.clear' %}" class="btn btn-primary" role="button"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Clear Documents </a></p></div>
+<div><p class='button2_pos'><a href="{% url 'polls.views.clear' %}" class="btn btn-success btn-sm" role="button"> Clear Documents </a></p></div>
 <br>
 <br>
 <br>
-</div>
-<div class="web-app">
-    <div><h4><i>Uploaded VCF's</i></h4></div>
+    <div><h5><i><b>2- </b>Uploaded VCF's</i></h5></div>
 	{% if vcf_files %}
 	<ul>
 		{% for vcf in vcf_files %}
@@ -27,15 +28,17 @@
 		{% endfor %}
 	</ul>
 	{% else %}
-		<p>No plots</p>
+		<p>No files</p>
 	{% endif %}
 <br>
 
-<p class='button_images'><a href="{% url 'polls.views.clear_vcf' %}" class="btn btn-primary" role="button"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Clear Images </a></p>
+<p class='button_images'><a href="{% url 'polls.views.clear_vcf' %}" class="btn btn-success btn-sm" role="button"> Clear Images </a></p>
 <br>
 <br>
 <br>
 <div><h5><i><b>Warning: </b>Every Sunday at 00:00 files are deleted</i></h5></div><br>
+</div>
+</div>
 </div>
 <br>
 <br>

@@ -1,7 +1,9 @@
 {% extends 'polls/base.html' %}
 
 {% block content %}
-<div class="web-app">
+<div class="page-header" id="banner">
+    <div class="row">
+		<div class="col-lg-9">
 {% block title %}Reset Password{% endblock %}
 
 {% block mainblock %}
@@ -13,6 +15,8 @@
         <button type="submit">Submit</button>
     </form>
 </div>
+    </div>
+    </div>
 {% endblock %}
 
 {% endblock %}
