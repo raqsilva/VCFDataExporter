@@ -31,6 +31,17 @@
         </div>
         <div class="navbar-collapse collapse" id="navbar-main">
           <ul class="nav navbar-nav">
+            <li>
+              <a href="{% url 'polls.views.GP_view' %}">Tool</a>
+            </li>
+            <li>
+              <a href="{% url 'polls.views.validate_view' %}">Validate VCF</a>
+            </li>
+            <li>
+              <a href="{% url 'polls.views.result' %}">Documents</a>
+            </li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
             {% if user.is_authenticated %}
             <li>
               <a href="{% url 'pytera.views.logout' %}">Logout</a>
@@ -41,19 +52,7 @@
             </li>
             {% endif %}
             <li>
-              <a href="{% url 'polls.views.GP_view' %}">Tool</a>
-            </li>
-            <li>
-              <a href="{% url 'polls.views.validate_view' %}">Validate VCF</a>
-            </li>
-            <li>
-              <a href="{% url 'polls.views.result' %}">Documents</a>
-            </li>
-            <li>
-              <a href="{% url 'pytera.views.register_user' %}">Register</a>
-            </li>
-            <li>
-              <a href="#">Contacts</a>
+            <a href="#">Contacts</a>
             </li>
             </ul>
         </div>
