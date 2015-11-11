@@ -1,4 +1,3 @@
-from ftplib import FTP
 import os 
 from os.path import expanduser
 import vcf
