@@ -1,4 +1,4 @@
-# VcfDataExporter
+# VCFDataExporter
 
 Source code of a Web App created using Django to export/extract data from VCF files.
 
