@@ -2,7 +2,7 @@
 
 Source code of a Web App created using Django to export/extract data from VCF files.
 
-There are some standard datasets like ESP, ExAC and 1000GP.
+There are some standard datasets like ESP, ExAC and 1000 Genomes Project.
 
 You may also upload your own VCF file and export data from it to an Excel file, fasta file or check the stats.
 
