@@ -26,3 +26,5 @@ polls/migrations/__pycache__/
 pytera/key.txt
 pytera/__pycache__/
 polls/management/__pycache__/
+!.DS_Store
+!.idea/
