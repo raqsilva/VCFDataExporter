@@ -10,8 +10,8 @@ https://docs.djangoproject.com/en/1.7/ref/settings/
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
-import ldap
-from django_auth_ldap.config import LDAPSearch, GroupOfNamesType
+#import ldap
+#from django_auth_ldap.config import LDAPSearch, GroupOfNamesType
 
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
@@ -95,28 +95,28 @@ ROOT_URLCONF = 'pytera.urls'
 WSGI_APPLICATION = 'pytera.wsgi.application'
 
 
-# LDAP authentication
-AUTHENTICATION_BACKENDS = (
-    'django_auth_ldap.backend.LDAPBackend',
-    'django.contrib.auth.backends.ModelBackend',
-)
-
-AUTH_LDAP_SERVER_URI = "ldap://unixldap.cc.ic.ac.uk/"
-
-AUTH_LDAP_BIND_DN = ""
-AUTH_LDAP_BIND_PASSWORD = ""
-AUTH_LDAP_USER_SEARCH = LDAPSearch("ou=everyone,dc=ic,dc=ac,dc=uk",
-    ldap.SCOPE_SUBTREE, "(uid=%(user)s)")
-
-
-AUTH_LDAP_ALWAYS_UPDATE_USER = True
-
-# Use LDAP group membership to calculate group permissions.
-AUTH_LDAP_FIND_GROUP_PERMS = True
-
-# Cache group memberships for an hour to minimize LDAP traffic
-AUTH_LDAP_CACHE_GROUPS = True
-AUTH_LDAP_GROUP_CACHE_TIMEOUT = 3600
+# # LDAP authentication
+# AUTHENTICATION_BACKENDS = (
+#     'django_auth_ldap.backend.LDAPBackend',
+#     'django.contrib.auth.backends.ModelBackend',
+# )
+#
+# AUTH_LDAP_SERVER_URI = "ldap://unixldap.cc.ic.ac.uk/"
+#
+# AUTH_LDAP_BIND_DN = ""
+# AUTH_LDAP_BIND_PASSWORD = ""
+# AUTH_LDAP_USER_SEARCH = LDAPSearch("ou=everyone,dc=ic,dc=ac,dc=uk",
+#     ldap.SCOPE_SUBTREE, "(uid=%(user)s)")
+#
+#
+# AUTH_LDAP_ALWAYS_UPDATE_USER = True
+#
+# # Use LDAP group membership to calculate group permissions.
+# AUTH_LDAP_FIND_GROUP_PERMS = True
+#
+# # Cache group memberships for an hour to minimize LDAP traffic
+# AUTH_LDAP_CACHE_GROUPS = True
+# AUTH_LDAP_GROUP_CACHE_TIMEOUT = 3600
 
 
 

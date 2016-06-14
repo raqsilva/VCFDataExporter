@@ -34,3 +34,4 @@ polls/migrations/.idea
 polls/template/.idea
 polls/management/.idea
 polls/management/commands/.idea
+polls/pytera/.idea
