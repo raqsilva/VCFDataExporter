@@ -9,33 +9,33 @@ import collections
 from .dictionaries import exac_col_dic
 from pytera.settings import BASE_DIR
 
-
-#PYTERA_PATH = str(os.getenv('PYTERA_PATH'))
+# PYTERA_PATH = str(os.getenv('PYTERA_PATH'))
 PYTERA_PATH = BASE_DIR
-    
+
 
 def exac_xlsx_file(chromo, start, stop, user_profile, columns):
-    basePath=getBasePath()
+    basePath = getBasePath()
     exac_file = getExacPath()
-    
-    subprocess.call(PYTERA_PATH+"/static/tabix/tabix -f -p vcf -h "+exac_file+" "+str(chromo)+":"+str(start)+"-"+str(stop)+" > "+PYTERA_PATH+"/static/downloads/subset.vcf", shell=True)
-    
-    vcf_reader = vcf.Reader(filename=PYTERA_PATH+"/static/downloads/subset.vcf")
-    
+
+    subprocess.call(PYTERA_PATH + "/static/tabix/tabix -f -p vcf -h " + exac_file + " " + str(chromo) + ":" + str(
+        start) + "-" + str(stop) + " > " + PYTERA_PATH + "/static/downloads/subset.vcf", shell=True)
+
+    vcf_reader = vcf.Reader(filename=PYTERA_PATH + "/static/downloads/subset.vcf")
+
     text = {}
     for key in columns:
         text[exac_col_dic[key][0]] = [exac_col_dic[key][1]]
-        
-    text[0] = ['CHROM'] 
-    text[1] = ['POS'] 
-    text[2] = ['ID'] 
-    text[3] = ['Type'] #SNP/INDEL
+
+    text[0] = ['CHROM']
+    text[1] = ['POS']
+    text[2] = ['ID']
+    text[3] = ['Type']  # SNP/INDEL
     text[4] = ['REF']
     text[5] = ['ALT']
     text[6] = ['QUAL']
-    
+
     for record in vcf_reader:
-        if record.POS>=start and record.POS<=stop and record.CHROM==chromo:
+        if record.POS >= start and record.POS <= stop and record.CHROM == chromo:
             text[0].append(str(record.CHROM))
             text[1].append(str(record.POS))
             ID = str(record.ID)
@@ -43,28 +43,28 @@ def exac_xlsx_file(chromo, start, stop, user_profile, columns):
             text[4].append(str(record.REF))
             text[5].append(str(record.ALT[0]))
             text[6].append(str(record.QUAL))
-            if ID!='None':
+            if ID != 'None':
                 if ID.startswith('rs'):
-                    text[2].append(('http://www.ncbi.nlm.nih.gov/projects/SNP/snp_ref.cgi?rs='+ID[2:], ID))
+                    text[2].append(('http://www.ncbi.nlm.nih.gov/projects/SNP/snp_ref.cgi?rs=' + ID[2:], ID))
                 else:
                     text[2].append(ID)
             else:
                 text[2].append('None')
-            
+
             def append_data(dic_key, dic, nr):
                 try:
                     key = list(record.INFO[dic_key])
-                    if len(key)==2:
+                    if len(key) == 2:
                         try:
-                            dic[nr].append(str(key[0])+'/'+str(key[1]))
+                            dic[nr].append(str(key[0]) + '/' + str(key[1]))
                         except KeyError:
                             pass
-                    elif len(key)==3:
+                    elif len(key) == 3:
                         try:
-                            dic[nr].append(str(key[0])+'/'+str(key[1])+'/'+str(key[2]))
+                            dic[nr].append(str(key[0]) + '/' + str(key[1]) + '/' + str(key[2]))
                         except KeyError:
                             pass
-                    elif len(key)==1:
+                    elif len(key) == 1:
                         try:
                             dic[nr].append(str(key[0]))
                         except KeyError:
@@ -76,7 +76,7 @@ def exac_xlsx_file(chromo, start, stop, user_profile, columns):
                             pass
                 except KeyError:
                     pass
-            
+
             def append_to_dic(dic_key, dic, nr):
                 try:
                     dic[nr].append(record.INFO[dic_key])
@@ -95,7 +95,7 @@ def exac_xlsx_file(chromo, start, stop, user_profile, columns):
             append_data('AC_OTH', text, 16)
             append_data('AC_SAS', text, 17)
             append_data('AF', text, 18)
-            
+
             append_to_dic('AN', text, 19)
             append_to_dic('AN_AFR', text, 20)
             append_to_dic('AN_AMR', text, 21)
@@ -107,7 +107,7 @@ def exac_xlsx_file(chromo, start, stop, user_profile, columns):
             append_to_dic('AN_SAS', text, 27)
             append_to_dic('GQ_MEAN', text, 28)
             append_to_dic('GQ_STDDEV', text, 29)
-            
+
             append_data('Hemi_AFR', text, 30)
             append_data('Hemi_AMR', text, 31)
             append_data('Hemi_EAS', text, 32)
@@ -129,30 +129,31 @@ def exac_xlsx_file(chromo, start, stop, user_profile, columns):
             append_data('Hom_NFE', text, 48)
             append_data('Hom_OTH', text, 49)
             append_data('Hom_SAS', text, 50)
-            
-        elif record.POS>=stop and record.CHROM==chromo:
+
+        elif record.POS >= stop and record.CHROM == chromo:
             break
-    
+
     text = collections.OrderedDict(sorted(text.items()))
-    
-    workbook = xlsxwriter.Workbook(basePath+'/excel_exac-'+str(chromo)+'-'+str(start)+'-'+str(stop)+'.xlsx')
+
+    workbook = xlsxwriter.Workbook(
+        basePath + '/excel_exac-' + str(chromo) + '-' + str(start) + '-' + str(stop) + '.xlsx')
     link_format = workbook.add_format({'color': 'blue', 'underline': 1})
     worksheet = workbook.add_worksheet()
     worksheet.set_column(5, 40, 15)
     worksheet.set_column(0, 0, 8)
     worksheet.set_column(3, 5, 8)
     worksheet.set_column(1, 2, 14)
-    
+
     col = 0
     for key in text.keys():
         row = 0
-        if key!=2:
+        if key != 2:
             for par in text[key]:
                 worksheet.write(row, col, str(par))
                 row = row + 1
         else:
             for par in text[key]:
-                if par[1][0:2]=='rs':
+                if par[1][0:2] == 'rs':
                     worksheet.write_url(row, col, str(par[0]), link_format, str(par[1]))
                     row = row + 1
                 else:
@@ -160,19 +161,14 @@ def exac_xlsx_file(chromo, start, stop, user_profile, columns):
                     row = row + 1
         col = col + 1
     workbook.close()
-    file = 'excel_exac-'+str(chromo)+'-'+str(start)+'-'+str(stop)+'.xlsx'
+    file = 'excel_exac-' + str(chromo) + '-' + str(start) + '-' + str(stop) + '.xlsx'
     save_binary(file, user_profile)
-    os.remove(basePath+'/excel_exac-'+str(chromo)+'-'+str(start)+'-'+str(stop)+'.xlsx')
-    os.remove(basePath+"/subset.vcf")
-    
-    path = basePath+'/documents/excel_exac-'+str(chromo)+'-'+str(start)+'-'+str(stop)+'.xlsx'
+    os.remove(basePath + '/excel_exac-' + str(chromo) + '-' + str(start) + '-' + str(stop) + '.xlsx')
+    os.remove(basePath + "/subset.vcf")
+
+    path = basePath + '/documents/excel_exac-' + str(chromo) + '-' + str(start) + '-' + str(stop) + '.xlsx'
     with open(path, "rb") as excel:
         data = excel.read()
-    response = HttpResponse( data, content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
-    response['Content-Disposition'] = 'attachment; filename=' + 'excel_exac-'+str(start)+'-'+str(stop)+'.xlsx'
+    response = HttpResponse(data, content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+    response['Content-Disposition'] = 'attachment; filename=' + 'excel_exac-' + str(start) + '-' + str(stop) + '.xlsx'
     return response
-
-
-
-
-
